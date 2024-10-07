@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "live-server",
+    "build": "npm-run-all build:*",
+    "build:html": "cp index.html dist/",
+    "build:css": "cp styles.css dist/",
+    "build:js": "cp script.js dist/"
+  }
+}
