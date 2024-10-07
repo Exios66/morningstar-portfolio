@@ -131,3 +131,5 @@ console.error('FAILED...', error);
 });
 }
 });
+
+console.log("Script loaded successfully");

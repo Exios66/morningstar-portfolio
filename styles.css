@@ -17,15 +17,14 @@
 }
 
 body {
-    font-family: 'Roboto', 'Courier New', monospace;
-    background: var(--bg-gradient);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    transition: background var(--transition-speed), color var(--transition-speed);
+    font-family: Arial, sans-serif;
     line-height: 1.6;
-    overflow-x: hidden;
-    font-size: 16px;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
 }
 
 .dark-theme {
