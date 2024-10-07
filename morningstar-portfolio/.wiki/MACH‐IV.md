@@ -56,11 +56,11 @@ Note: The cutoff of 60 is based on the original normative sample and may vary in
 
 ## Psychometric Properties
 
-- **Reliability**: 
+- **Reliability**:
   - Internal consistency (Cronbach's alpha) typically ranges from 0.70 to 0.75
   - Test-retest reliability has been reported around 0.75
 
-- **Validity**: 
+- **Validity**:
   - Demonstrates good construct validity
   - Correlates with behavioral measures of manipulation and emotional detachment
   - Shows expected relationships with other personality measures (e.g., negatively correlated with agreeableness)
@@ -78,11 +78,13 @@ The MACH-IV has been used extensively in various fields:
 ## Advantages and Limitations
 
 ### Advantages
+
 - Well-established measure with decades of research support
 - Relatively quick and easy to administer
 - Provides a continuous measure of Machiavellianism
 
 ### Limitations
+
 - Some items may be dated or culturally specific
 - Potential for social desirability bias in self-report
 - May not capture all aspects of modern conceptualizations of Machiavellianism
@@ -90,6 +92,7 @@ The MACH-IV has been used extensively in various fields:
 ## Ethical Considerations
 
 When using the MACH-IV, researchers and practitioners should:
+
 1. Ensure informed consent and confidentiality
 2. Avoid labeling individuals based solely on test scores
 3. Consider cultural and contextual factors in interpretation

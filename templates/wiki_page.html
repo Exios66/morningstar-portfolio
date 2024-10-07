@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} - Wiki{% endblock %}
+
+{% block header %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<article class="wiki-content">
+    {{ page_content | safe }}
+</article>
+{% endblock %}

@@ -1,7 +1,7 @@
-# Python version
-python>=3.7
+# This file is intentionally left empty as no external libraries are required.
+# Python version requirement: >=3.7
 
-# No external libraries are required for the current changelog_updater.py script.
-# If you add any external dependencies in the future, list them here, for example:
-# requests==2.25.1
-# PyYAML==5.4.1
+Flask==2.1.0
+Jinja2==3.0.3
+Markdown==3.3.6
+python-frontmatter==1.0.0

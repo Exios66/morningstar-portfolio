@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item_title }} - Portfolio{% endblock %}
+
+{% block header %}{{ item_title }}{% endblock %}
+
+{% block content %}
+<article class="portfolio-item">
+    <div class="item-content">
+        {{ item_content | safe }}
+    </div>
+</article>
+{% endblock %}

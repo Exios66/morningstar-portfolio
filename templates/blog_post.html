@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post_title }} - Blog{% endblock %}
+
+{% block header %}{{ post_title }}{% endblock %}
+
+{% block content %}
+<article class="blog-post">
+    <header>
+        <p class="post-meta">Published on {{ post_date }} by {{ post_author }}</p>
+    </header>
+    <div class="post-content">
+        {{ post_content | safe }}
+    </div>
+</article>
+{% endblock %}
