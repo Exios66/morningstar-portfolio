@@ -1,16 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website Title</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta description="Lucius Morningstar's professional portfolio showcasing multidisciplinary development and design skills.">
+<meta name="keywords" content="Lucius Morningstar, portfolio, developer, designer, UI/UX, web animations, neuroscience, philosophy">
+<meta name="author" content="Lucius Morningstar">
+
+<!-- Open Graph Meta Tags for SEO and Social Sharing -->
+<meta property="og:title" content="Lucius Morningstar - Cyberpunk Portfolio">
+<meta property="og:description" content="Explore the portfolio of Lucius Morningstar, a multidisciplinary developer and designer with a passion for Cyberpunk aesthetics, Neuroscience, and Philosophy.">
+<meta property="og:image" content="path/to/og-image.jpg">
+<meta property="og:url" content="https://yourportfolio.com">
+<meta property="og:type" content="website">
+
+<title>Lucius Morningstar - Cyberpunk Portfolio</title>
+
+<!-- Favicon -->
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<!-- External CSS Libraries -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHq6xJw1i6agGuvQ3iVvjX5fY7a8k9AxTQvPe8cZ5XDKbUwNiLEr5J3YIxk7LqmKWg0DKb5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<!-- Slick Slider CSS for Testimonials -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is a test paragraph to ensure the content is visible.</p>
+<!-- Theme Toggle Button -->
+<button id="theme-toggle" type="button" aria-label="Toggle Dark/Light Theme">
+<span class="sun-icon">☀️</span>
+<span class="moon-icon">🌙</span>
+</button>
 
-    <script src="script.js"></script>
+<!-- Navigation Bar -->
+<nav>
+<ul>
+<li><a href="#home" class="nav-link">Home</a></li>
+<li><a href="#about" class="nav-link">About</a></li>
+<li><a href="#services" class="nav-link">Services</a></li>
+<li><a href="#skills" class="nav-link">Skills</a></li>
+<li><a href="#projects" class="nav-link">Projects</a></li>
+<li><a href="#blog" class="nav-link">Blog</a></li>
+<li><a href="#contact" class="nav-link">Contact</a></li>
+</ul>
+</nav>
+
+<!-- Header Section -->
+<header id="home" role="banner">
+    <div class="container">
+        <h1 class="animate__animated animate__glitch">Lucius Morningstar</h1>
+        <h2 class="subtitle">Cyberpunk Visionary | Code Architect | Neuro-Philosopher</h2>
+        <p class="intro-text">Multidisciplinary Developer & Designer with a passion for Cyberpunk aesthetics, Neuroscience, and Philosophy. Crafting digital experiences that challenge the boundaries of reality and perception.</p>
+        <div class="cta-buttons">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+        </div>
+        <div class="social-icons">
+            <a href="#" aria-label="LinkedIn" title="Connect on LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="GitHub" title="Check out my GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" aria-label="Twitter" title="Follow me on Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Dribbble" title="See my designs on Dribbble"><i class="fab fa-dribbble"></i></a>
+            <a href="#" aria-label="Instagram" title="Follow me on Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Medium" title="Read my articles on Medium"><i class="fab fa-medium"></i></a>
+            <a href="#" aria-label="CodePen" title="Explore my CodePen"><i class="fab fa-codepen"></i></a>
+            <a href="#" aria-label="YouTube" title="Watch my videos on YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <a href="#about" aria-label="Scroll to About section">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+</header>
+
+<!-- About Section -->
+<section class="about" id="about" role="region" aria-labelledby="about-heading">
+<div class="container">
+<img src="profile.jpg" alt="Portrait of Lucius Morningstar" loading="lazy" srcset="profile-small.jpg 480w, profile-medium.jpg 768w, profile-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<h2 id="about-heading">About Me</h2>
+<p>
+I'm Lucius Morningstar, a passionate developer and designer specializing in creating immersive digital experiences. My expertise spans across UI/UX design, web development, and interactive animations, all infused with a Cyberpunk aesthetic. With a background in neuroscience and philosophy, I bring a unique perspective to problem-solving and creative design.
+</p>
+</div>
+</section>
+
+<!-- Services Section -->
+<section class="services" id="services" role="region" aria-labelledby="services-heading">
+<div class="container">
+<h2 id="services-heading">Services & Expertise</h2>
+<div class="service">
+<i class="fas fa-code fa-3x" aria-hidden="true"></i>
+<h3>Web Development</h3>
+<p>Crafting responsive and dynamic websites using cutting-edge technologies, with a focus on cyberpunk aesthetics and immersive user experiences.</p>
+</div>
+<div class="service">
+<i class="fas fa-paint-brush fa-3x" aria-hidden="true"></i>
+<h3>UI/UX Design</h3>
+<p>Designing intuitive and engaging user interfaces that challenge perception and push the boundaries of digital interaction.</p>
+</div>
+<div class="service">
+<i class="fas fa-robot fa-3x" aria-hidden="true"></i>
+<h3>Interactive Animations</h3>
+<p>Creating captivating animations that enhance user interaction and bring cyberpunk visions to life.</p>
+</div>
+<div class="service">
+<i class="fas fa-brain fa-3x" aria-hidden="true"></i>
+<h3>Neuroscience Research</h3>
+<p>Conducting cutting-edge research on brain-computer interfaces and cognitive enhancement technologies.</p>
+</div>
+<div class="service">
+<i class="fas fa-lightbulb fa-3x" aria-hidden="true"></i>
+<h3>Philosophical Consultation</h3>
+<p>Offering insights on the ethical implications of emerging technologies and the nature of consciousness in the digital age.</p>
+</div>
+<div class="service">
+<i class="fas fa-microchip fa-3x" aria-hidden="true"></i>
+<h3>Machine Learning Development</h3>
+<p>Developing advanced AI systems and neural networks for predictive analytics and pattern recognition.</p>
+</div>
+<div class="service">
+<i class="fas fa-vr-cardboard fa-3x" aria-hidden="true"></i>
+<h3>Virtual Reality Experiences</h3>
+<p>Designing and developing immersive VR environments that blur the lines between reality and simulation.</p>
+</div>
+<div class="service">
+<i class="fas fa-lock fa-3x" aria-hidden="true"></i>
+<h3>Cybersecurity Consulting</h3>
+<p>Providing expert advice on digital security measures and ethical hacking techniques in an increasingly connected world.</p>
+</div>
+</div>
+</section>
+
+<!-- Skills Section -->
+<section class="skills" id="skills" role="region" aria-labelledby="skills-heading">
+  <div class="container">
+    <h2 id="skills-heading">Skills</h2>
+    <div class="skill">
+      <h3>HTML/CSS</h3>
+      <div class="progress progress-html-css" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="HTML/CSS skill level"></div>
+    </div>
+    <div class="skill">
+      <h3>JavaScript</h3>
+      <div class="progress progress-javascript" role="progressbar" aria-label="JavaScript skill level" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="skill">
+      <h3>React</h3>
+      <div class="progress progress-react" role="progressbar" aria-label="React skill level" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="skill">
+      <h3>UI/UX Design</h3>
+      <div class="progress progress-ui-ux" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="UI/UX Design skill progress"></div>
+    </div>
+    <div class="skill">
+      <h3>Python</h3>
+      <div class="progress progress-python" role="progressbar" aria-label="Python skill level" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="projects" id="projects" role="region" aria-labelledby="projects-heading">
+<div class="container">
+<h2 id="projects-heading">Projects</h2>
+<div class="project-grid">
+<div class="project">
+<img src="project1.jpg" alt="Screenshot of Project One" loading="lazy" srcset="project1-small.jpg 480w, project1-medium.jpg 768w, project1-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>Project One</h3>
+<p>A brief description of Project One, highlighting the technologies used and the problem it solves.</p>
+<a href="#" class="btn" aria-label="View Project One">View Project</a>
+</div>
+</div>
+<div class="project">
+<img src="project2.jpg" alt="Screenshot of Project Two" loading="lazy" srcset="project2-small.jpg 480w, project2-medium.jpg 768w, project2-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>Project Two</h3>
+<p>A brief description of Project Two, highlighting the technologies used and the problem it solves.</p>
+<a href="#" class="btn" aria-label="View Project Two">View Project</a>
+</div>
+</div>
+<div class="project">
+<img src="project3.jpg" alt="Screenshot of Project Three" loading="lazy" srcset="project3-small.jpg 480w, project3-medium.jpg 768w, project3-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>Project Three</h3>
+<p>A brief description of Project Three, highlighting the technologies used and the problem it solves.</p>
+<a href="#" class="btn" aria-label="View Project Three">View Project</a>
+</div>
+</div>
+<div class="project">
+<img src="dark-triad-assessment.jpg" alt="Screenshot of Dark Triad Assessment Research" loading="lazy" srcset="dark-triad-small.jpg 480w, dark-triad-medium.jpg 768w, dark-triad-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>Dark Triad Assessment Research</h3>
+<p>An in-depth study on the Dark Triad personality traits, utilizing advanced psychometric tools and data analysis techniques.</p>
+<a href="#" class="btn" aria-label="View Dark Triad Assessment Research">View Project</a>
+</div>
+</div>
+<div class="project">
+<img src="morningstar-virtue-theory.jpg" alt="Screenshot of The Morningstar Virtue Theory" loading="lazy" srcset="virtue-theory-small.jpg 480w, virtue-theory-medium.jpg 768w, virtue-theory-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>The Morningstar Virtue Theory: A Philosophical Treatise</h3>
+<p>A comprehensive philosophical work exploring the nature of virtue in the context of modern ethical dilemmas.</p>
+<a href="#" class="btn" aria-label="View The Morningstar Virtue Theory">View Project</a>
+</div>
+</div>
+<div class="project">
+<img src="metaphysical-entanglements.jpg" alt="Screenshot of Metaphysical Entanglements" loading="lazy" srcset="metaphysical-small.jpg 480w, metaphysical-medium.jpg 768w, metaphysical-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="project-info">
+<h3>Metaphysical Entanglements: A Cyberpunk Literature Series</h3>
+<p>A collection of cyberpunk short stories exploring the intersection of technology, consciousness, and reality.</p>
+<a href="#" class="btn" aria-label="View Metaphysical Entanglements">View Project</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Blog Section -->
+<section class="blog" id="blog" role="region" aria-labelledby="blog-heading">
+<div class="container">
+<h2 id="blog-heading">Blog</h2>
+<div class="blog-grid">
+<article class="blog-post">
+<img src="blog1.jpg" alt="Thumbnail for Blog Post One" loading="lazy" srcset="blog1-small.jpg 480w, blog1-medium.jpg 768w, blog1-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="blog-info">
+<h3><a href="#" aria-label="Read Blog Post One">Blog Post One</a></h3>
+<p>A short excerpt from Blog Post One, enticing readers to click and read more.</p>
+<a href="#" class="btn" aria-label="Read More about Blog Post One">Read More</a>
+</div>
+</article>
+<article class="blog-post">
+<img src="blog2.jpg" alt="Thumbnail for Blog Post Two" loading="lazy" srcset="blog2-small.jpg 480w, blog2-medium.jpg 768w, blog2-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="blog-info">
+<h3><a href="#" aria-label="Read Blog Post Two">Blog Post Two</a></h3>
+<p>A short excerpt from Blog Post Two, enticing readers to click and read more.</p>
+<a href="#" class="btn" aria-label="Read More about Blog Post Two">Read More</a>
+</div>
+</article>
+<article class="blog-post">
+<img src="blog3.jpg" alt="Thumbnail for Blog Post Three" loading="lazy" srcset="blog3-small.jpg 480w, blog3-medium.jpg 768w, blog3-large.jpg 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1200px">
+<div class="blog-info">
+<h3><a href="#" aria-label="Read Blog Post Three">Blog Post Three</a></h3>
+<p>A short excerpt from Blog Post Three, enticing readers to click and read more.</p>
+<a href="#" class="btn" aria-label="Read More about Blog Post Three">Read More</a>
+</div>
+</article>
+<!-- Add more blog posts as needed -->
+</div>
+</div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials" role="region" aria-labelledby="testimonials-heading">
+<div class="container">
+<h2 id="testimonials-heading">Testimonials</h2>
+<div class="testimonial-slider">
+<div class="testimonial">
+<p>"Lucius is a visionary developer who combines technical expertise with creative flair. His work on our website significantly improved user engagement."</p>
+<h4>- Jane Doe, CEO of TechCorp</h4>
+</div>
+<div class="testimonial">
+<p>"Working with Lucius was a fantastic experience. His attention to detail and understanding of user experience is unparalleled."</p>
+<h4>- John Smith, Product Manager at InnovateX</h4>
+</div>
+<div class="testimonial">
+<p>"Lucius's ability to merge aesthetics with functionality brings a unique touch to every project. Highly recommended!"</p>
+<h4>- Emily Clark, Designer at Creatives Inc.</h4>
+</div>
+<div class="testimonial">
+<p>"Lucius's innovative approach to problem-solving and his deep understanding of user needs resulted in a product that exceeded our expectations."</p>
+<h4>- Sarah Johnson, CTO of FutureTech</h4>
+</div>
+<div class="testimonial">
+<p>"The cyberpunk-inspired design Lucius created for our brand has set us apart in the market. His work is truly one-of-a-kind."</p>
+<h4>- Michael Chen, Marketing Director at NeonWave</h4>
+</div>
+<div class="testimonial">
+<p>"Lucius's expertise in both front-end and back-end development made our project a seamless experience. His work is robust, scalable, and beautifully crafted."</p>
+<h4>- Alex Rodriguez, Lead Developer at CodeCraft</h4>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact" role="region" aria-labelledby="contact-heading">
+<div class="container">
+<h2 id="contact-heading">Contact Me</h2>
+<form id="contact-form" class="contact-form" aria-label="Contact Form">
+<div class="form-group">
+<label for="name">Name<span aria-hidden="true">*</span></label>
+<input type="text" id="name" name="name" required aria-required="true" aria-label="Your Name">
+</div>
+<div class="form-group">
+<label for="email">Email<span aria-hidden="true">*</span></label>
+<input type="email" id="email" name="email" required aria-required="true" aria-label="Your Email">
+</div>
+<div class="form-group">
+<label for="message">Message<span aria-hidden="true">*</span></label>
+<textarea id="message" name="message" rows="5" required aria-required="true" aria-label="Your Message"></textarea>
+</div>
+<button type="submit" class="btn" aria-label="Send Message">Send Message</button>
+<p id="form-status" role="status" aria-live="polite"></p>
+</form>
+</div>
+</section>
+
+<!-- Footer -->
+<footer role="contentinfo">
+<div class="container">
+<p>&copy; 2024 Copyright Morningstar Developments LLC. All rights reserved.</p>
+<nav class="footer-nav">
+<ul>
+<li><a href="/privacy-policy" aria-label="Privacy Policy">Privacy Policy</a></li>
+<li><a href="/terms-of-service" aria-label="Terms of Service">Terms of Service</a></li>
+<li><a href="/cookie-policy" aria-label="Cookie Policy">Cookie Policy</a></li>
+<li><a href="/license" aria-label="License Information">License</a></li>
+<li><a href="/sitemap" aria-label="Sitemap">Sitemap</a></li>
+</ul>
+</nav>
+<div class="footer-social">
+<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+<a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+<a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+<a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+</div>
+</div>
+</footer>
+
+<!-- Back to Top Button -->
+<button id="back-to-top" aria-label="Back to Top" type="button">
+<i class="fas fa-arrow-up" aria-hidden="true"></i>
+</button>
+
+<!-- External JavaScript Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894yeM4ManaKulqp+6Aql30Bnp075UwC6DkbnWlMZNkFrHkYqVAmx_ALg1J/DsGkM+uMZBjtjN9gMxUcbjCK2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Slick Slider JS for Testimonials -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GOOGLE_ANALYTICS_TRACKING_ID"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'YOUR_GOOGLE_ANALYTICS_TRACKING_ID');
+</script>
+
+<!-- Custom JavaScript -->
+<script src="script.js"></script>
 </body>
 </html>
