@@ -14,69 +14,6 @@
       yearSpan.textContent = currentYear;
     }
   
-    // Theme Toggle Functionality
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
-    const body = document.body;
-
-    function setTheme(isDark) {
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        body.classList.toggle('dark-theme', isDark);
-        localStorage.setItem('dark-theme', isDark);
-        
-        // Update both the button and checkbox
-        themeToggleBtn.setAttribute('aria-pressed', isDark);
-        themeToggleCheckbox.checked = isDark;
-    }
-
-    // Check for saved theme preference or prefer-color-scheme
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    const savedTheme = localStorage.getItem('dark-theme');
-
-    if (savedTheme !== null) {
-        setTheme(savedTheme === 'true');
-    } else {
-        setTheme(prefersDarkScheme.matches);
-    }
-
-    // Event listener for the button
-    themeToggleBtn.addEventListener('click', () => {
-        setTheme(!body.classList.contains('dark-theme'));
-    });
-
-    // Event listener for the checkbox
-    themeToggleCheckbox.addEventListener('change', (e) => {
-        setTheme(e.target.checked);
-    });
-
-    // Listen for changes in color scheme preference
-    prefersDarkScheme.addEventListener('change', (e) => {
-        setTheme(e.matches);
-    });
-
-    // Call these functions when the DOM is fully loaded
-    initializeTheme();
-    setupThemeToggle();
-  
-    // Back to Top Button Functionality
-    const backToTopBtn = document.getElementById('back-to-top');
-    if (backToTopBtn) {
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          backToTopBtn.style.display = 'block';
-        } else {
-          backToTopBtn.style.display = 'none';
-        }
-      });
-  
-      backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    }
-  
     // Smooth Scrolling for Navigation Links
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {

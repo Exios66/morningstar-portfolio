@@ -1,11 +1,11 @@
 /* Add these rules at the top of your CSS file */
 :root {
-    --bg-color: #0a0a1e;
-    --text-color: #00ffff;
+    --bg-color: #ffffff;
+    --text-color: #333333;
     --accent-color: #ff00ff;
     --secondary-color: #00ff00;
     --tertiary-color: #ff9900;
-    --bg-gradient: linear-gradient(135deg, #0a0a1e, #1a1a3e);
+    --bg-gradient: linear-gradient(135deg, #ffffff, #f0f0f0);
     --light-bg-color: #ffffff;
     --light-text-color: #333333;
     --light-accent-color: #ff00ff;
@@ -18,8 +18,13 @@
 
 /* Add these rules near the top of your CSS file, after the existing :root block */
 :root[data-theme='dark'] {
-  --background-color: #121212;
+  --bg-color: #121212;
   --text-color: #ffffff;
+  --accent-color: #ff00ff;
+  --secondary-color: #00ff00;
+  --tertiary-color: #ff9900;
+  --bg-gradient: linear-gradient(135deg, #0a0a1e, #1a1a3e);
+  --box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
 :root[data-theme='light'] {
@@ -32,7 +37,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 20px;
-    background-color: var(--background-color);
+    background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color var(--transition-speed), color var(--transition-speed);
 }
@@ -40,15 +45,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--heading-font);
     color: var(--text-color);
-}
-
-.dark-theme {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --accent-color: #ff00ff;
-    --secondary-color: #00ff00;
-    --tertiary-color: #ff9900;
-    --bg-gradient: linear-gradient(135deg, #ffffff, #f0f0f0);
 }
 
 /* Container */
@@ -75,7 +71,7 @@ header::before {
     transform: translateX(-50%);
     width: 200%;
     height: 100%;
-    background: url('cyberpunk-bg.jpg') center/cover no-repeat;
+    background: var(--bg-gradient);
     opacity: 0.2;
     z-index: -1;
     animation: backgroundPan 30s linear infinite;
@@ -211,22 +207,6 @@ body:not(.dark-theme) #theme-toggle .moon-icon,
 body.dark-theme #theme-toggle .sun-icon {
     opacity: 0;
     transform: scale(0.5);
-}
-
-/* Dark theme styles */
-.dark-theme {
-    --bg-color: #0a0a1e;
-    --text-color: #00ffff;
-    --accent-color: #ff00ff;
-    --secondary-color: #00ff00;
-    --tertiary-color: #ff9900;
-}
-
-/* Apply theme to body */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
 }
 
 /* About Section */
@@ -872,3 +852,19 @@ p {
     font-weight: 300;
     line-height: 1.6;
 }
+
+/* Add styles for blog post pages */
+.blog-post-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.blog-post-content h1, .blog-post-content h2, .blog-post-content h3 {
+    color: var(--accent-color);
+}
+
+.blog-post-content a {
+    color: var(--secondary-color);
+}
+
+/* ... add more specific styles for blog post elements as needed ... */

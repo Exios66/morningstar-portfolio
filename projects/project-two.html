@@ -6,6 +6,7 @@
     <title>Project Two - Lucius Morningstar</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Theme Toggle Button -->
@@ -13,6 +14,12 @@
         <span class="sun-icon">☀️</span>
         <span class="moon-icon">🌙</span>
     </button>
+
+    <!-- Theme Switch Label -->
+    <label class="theme-switch">
+        <input type="checkbox" id="theme-toggle-checkbox">
+        <span>Dark Mode</span>
+    </label>
 
     <header class="project-header">
         <div class="container">
@@ -23,16 +30,42 @@
 
     <main class="project-content">
         <div class="container">
-            <!-- ... (existing content) ... -->
+            <section>
+                <h2>Project Overview</h2>
+                <p>Detailed description of Project Two goes here.</p>
+            </section>
+            <section>
+                <h2>Technologies Used</h2>
+                <ul>
+                    <li>Technology 1</li>
+                    <li>Technology 2</li>
+                    <li>Technology 3</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Challenges and Solutions</h2>
+                <p>Discuss the challenges faced in Project Two and how they were overcome.</p>
+            </section>
+            <section>
+                <h2>Results</h2>
+                <p>Describe the outcomes and impact of Project Two.</p>
+            </section>
         </div>
     </main>
 
     <footer>
         <div class="container">
             <p>&copy; 2024 Lucius Morningstar. All rights reserved.</p>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                </ul>
+            </nav>
         </div>
     </footer>
 
     <script src="../script.js"></script>
+    <script src="../theme-toggle.js"></script>
 </body>
 </html>
