@@ -202,23 +202,21 @@ body.dark-theme #theme-toggle .sun-icon {
 }
 
 /* Dark theme styles */
-body.dark-theme {
+.dark-theme {
     --bg-color: #0a0a1e;
     --text-color: #00ffff;
     --accent-color: #ff00ff;
     --secondary-color: #00ff00;
     --tertiary-color: #ff9900;
-    --bg-gradient: linear-gradient(135deg, #0a0a1e, #1a1a3e);
 }
 
 /* Light theme styles */
-body:not(.dark-theme) {
+:root {
     --bg-color: #ffffff;
     --text-color: #333333;
     --accent-color: #ff00ff;
     --secondary-color: #00ff00;
     --tertiary-color: #ff9900;
-    --bg-gradient: linear-gradient(135deg, #ffffff, #f0f0f0);
 }
 
 /* Apply theme to body */

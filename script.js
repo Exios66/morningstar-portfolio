@@ -30,15 +30,17 @@ function setTheme(theme) {
 }
 
 // Initialize theme based on localStorage or system preference
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-    setTheme(savedTheme);
-} else {
-    // Check system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
     } else {
-        setTheme('light');
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
     }
 }
 
@@ -50,6 +52,9 @@ themeToggleBtn.addEventListener('click', () => {
         setTheme('dark');
     }
 });
+
+// Call initializeTheme when the script loads
+initializeTheme();
 
 // Back to Top Button Functionality
 const backToTopBtn = document.getElementById('back-to-top');
