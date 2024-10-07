@@ -260,4 +260,42 @@
         });
     }, { passive: false });
 
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('nav ul');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+
+    // Close menu when a link is clicked
+    navMenu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navMenu.classList.remove('show');
+      }
+    });
+
+    // Smooth scrolling for touch devices
+    const smoothScrollElements = document.querySelectorAll('.services-container, .skills-container, .blog-carousel');
+
+    smoothScrollElements.forEach(element => {
+      element.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        element.style.overflow = 'auto';
+      });
+
+      element.addEventListener('touchend', () => {
+        element.style.overflow = 'hidden';
+      });
+    });
+
+    // Adjust viewport height for mobile browsers
+    function setMobileViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    window.addEventListener('resize', setMobileViewportHeight);
+    setMobileViewportHeight();
+
   });

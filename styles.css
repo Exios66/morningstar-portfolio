@@ -867,4 +867,197 @@ p {
     color: var(--secondary-color);
 }
 
-/* ... add more specific styles for blog post elements as needed ... */
+/* Blog post header styles */
+.blog-post-header {
+    background-color: var(--secondary-bg-color);
+    padding: 2em 0;
+    text-align: center;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.blog-post-header h1 {
+    font-size: 2.5em;
+    color: var(--accent-color);
+    margin-bottom: 0.5em;
+}
+
+.blog-post-header .post-meta {
+    font-size: 0.9em;
+    color: var(--text-color-muted);
+}
+
+/* Blog post content styles */
+.blog-post-content {
+    padding: 2em 0;
+}
+
+.blog-post-content p {
+    margin-bottom: 1.5em;
+}
+
+.blog-post-content h2 {
+    font-size: 1.8em;
+    color: var(--accent-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+.blog-post-content h3 {
+    font-size: 1.4em;
+    color: var(--accent-color);
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+.blog-post-content blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+    color: var(--text-color-muted);
+}
+
+/* Blog post footer styles */
+.blog-post-footer {
+    background-color: var(--secondary-bg-color);
+    padding: 2em 0;
+    margin-top: 2em;
+    border-top: 2px solid var(--accent-color);
+}
+
+.blog-post-footer .social-share {
+    text-align: center;
+}
+
+.blog-post-footer .social-share h3 {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+.blog-post-footer .btn-social {
+    display: inline-block;
+    margin: 0 0.5em;
+    padding: 0.5em 1em;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.blog-post-footer .btn-social:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Comments section styles */
+.comments {
+    margin-top: 2em;
+    padding: 2em 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.comments h3 {
+    font-size: 1.5em;
+    color: var(--accent-color);
+    margin-bottom: 1em;
+}
+
+/* Add these media queries at the end of your CSS file */
+
+@media (max-width: 768px) {
+  /* Header adjustments */
+  header h1 {
+    font-size: 2.5em;
+  }
+
+  header .subtitle {
+    font-size: 1.2em;
+  }
+
+  /* Navigation adjustments */
+  nav {
+    padding: 10px;
+  }
+
+  nav ul {
+    flex-direction: column;
+  }
+
+  nav ul li {
+    margin: 5px 0;
+  }
+
+  /* Services and Skills adjustments */
+  .services-container,
+  .skills-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+  }
+
+  .service,
+  .skill {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
+
+  /* Project grid adjustments */
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Blog carousel adjustments */
+  .blog-carousel {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+  }
+
+  .blog-post {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
+
+  /* Contact form adjustments */
+  .contact-form {
+    width: 100%;
+  }
+
+  /* Footer adjustments */
+  .footer-nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-nav ul li {
+    margin: 5px 0;
+  }
+}
+
+/* Add styles for a mobile menu toggle button */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+  nav ul.show {
+    display: flex;
+  }
+}
