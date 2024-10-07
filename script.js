@@ -21,10 +21,10 @@ const body = document.body;
 // Function to set theme
 function setTheme(theme) {
     if (theme === 'dark') {
-        body.classList.add('dark-theme');
+        document.body.classList.add('dark-theme');
         localStorage.setItem('theme', 'dark');
     } else {
-        body.classList.remove('dark-theme');
+        document.body.classList.remove('dark-theme');
         localStorage.setItem('theme', 'light');
     }
 }
@@ -45,16 +45,22 @@ function initializeTheme() {
 }
 
 // Toggle theme when button is clicked
-themeToggleBtn.addEventListener('click', () => {
-    if (body.classList.contains('dark-theme')) {
-        setTheme('light');
-    } else {
-        setTheme('dark');
+function setupThemeToggle() {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.body.classList.contains('dark-theme')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        });
     }
-});
+}
 
-// Call initializeTheme when the script loads
+// Call these functions when the DOM is fully loaded
 initializeTheme();
+setupThemeToggle();
 
 // Back to Top Button Functionality
 const backToTopBtn = document.getElementById('back-to-top');
