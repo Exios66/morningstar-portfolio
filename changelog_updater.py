@@ -34,15 +34,14 @@ def run_git_command(cmd):
         logger.error(f"Error running git command {' '.join(cmd)}: {e}")
         return None
 
-def get_commits_since_last_version(last_version):
-    """Get commits since the last version"""
-    if last_version:
-        cmd = ['git', 'log', f'{last_version}..HEAD', '--oneline']
-    else:
-        cmd = ['git', 'log', '--oneline']
-    
-    commits = run_git_command(cmd)
-    return commits.split('\n') if commits else []
+def get_commits_since_last_update():
+    """Get commits since the last update"""
+    last_commit_hash = run_git_command(['git', 'rev-list', '--max-count=1', 'HEAD'])
+    if last_commit_hash:
+        cmd = ['git', 'log', '--pretty=format:%h - %s', f'{last_commit_hash}..HEAD']
+        commits = run_git_command(cmd)
+        return commits.split('\n') if commits else []
+    return []
 
 def generate_new_version(last_version):
     """Generate a new version number"""
@@ -55,7 +54,7 @@ def generate_new_version(last_version):
 def get_git_info():
     """Get git repository information"""
     current_branch = run_git_command(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
-    last_commit = run_git_command(['git', 'log', '-1', '--oneline'])
+    last_commit = run_git_command(['git', 'log', '-1', '--pretty=format:%h - %s'])
     return f"Current branch: {current_branch}\nLast commit: {last_commit}"
 
 def update_changelog():
@@ -82,8 +81,8 @@ def update_changelog():
         new_version = generate_new_version(last_version)
         logger.info(f"New version generated: {new_version}")
 
-        # Get commits since last version
-        commits = get_commits_since_last_version(last_version)
+        # Get commits since last update
+        commits = get_commits_since_last_update()
 
         if not commits:
             logger.info("No new commits found. Changelog not updated.")
