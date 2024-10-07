@@ -189,4 +189,75 @@
         }
       });
     }
+  
+    // Blog carousel functionality
+    const blogCarousel = document.querySelector('.blog-carousel');
+    const blogPosts = document.querySelectorAll('.blog-post');
+    const prevBlogBtn = document.getElementById('prev-blog');
+    const nextBlogBtn = document.getElementById('next-blog');
+
+    let blogCurrentIndex = 0;
+    const blogVisiblePosts = 3;
+
+    function updateBlogCarousel() {
+        blogPosts.forEach((post, index) => {
+            if (index >= blogCurrentIndex && index < blogCurrentIndex + blogVisiblePosts) {
+                post.style.display = 'block';
+            } else {
+                post.style.display = 'none';
+            }
+        });
+
+        prevBlogBtn.disabled = blogCurrentIndex === 0;
+        nextBlogBtn.disabled = blogCurrentIndex + blogVisiblePosts >= blogPosts.length;
+    }
+
+    prevBlogBtn.addEventListener('click', () => {
+        if (blogCurrentIndex > 0) {
+            blogCurrentIndex--;
+            updateBlogCarousel();
+        }
+    });
+
+    nextBlogBtn.addEventListener('click', () => {
+        if (blogCurrentIndex + blogVisiblePosts < blogPosts.length) {
+            blogCurrentIndex++;
+            updateBlogCarousel();
+        }
+    });
+
+    // Initialize blog carousel
+    updateBlogCarousel();
+
+    // Add blog carousel to the sections that can be scrolled
+    const scrollableSections = [
+        { element: skillsCarousel, visibleItems: visibleSkills },
+        { element: expertiseCarousel, visibleItems: visibleExpertise },
+        { element: blogCarousel, visibleItems: blogVisiblePosts }
+    ];
+
+    // Update the wheel event listener to include the blog carousel
+    document.addEventListener('wheel', (event) => {
+        event.preventDefault();
+        
+        scrollableSections.forEach(section => {
+            const rect = section.element.getBoundingClientRect();
+            if (
+                rect.top <= window.innerHeight &&
+                rect.bottom >= 0
+            ) {
+                const scrollDirection = event.deltaY > 0 ? 1 : -1;
+                const currentIndex = parseInt(section.element.dataset.currentIndex) || 0;
+                const totalItems = section.element.children.length;
+                
+                let newIndex = currentIndex + scrollDirection;
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex > totalItems - section.visibleItems) newIndex = totalItems - section.visibleItems;
+                
+                section.element.dataset.currentIndex = newIndex;
+                section.element.style.transform = `translateX(-${newIndex * (100 / section.visibleItems)}%)`;
+            }
+        });
+    }, { passive: false });
+
   });
