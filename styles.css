@@ -1260,3 +1260,79 @@ p {
     width: 100%;
   }
 }
+
+/* Add these styles to your existing CSS file */
+
+.skill-details {
+    padding: 4rem 0;
+    background-color: var(--bg-color);
+}
+
+.skill-details h1 {
+    color: var(--accent-color);
+    font-size: 2.5em;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.skill-progress {
+    margin-bottom: 3rem;
+}
+
+.skill-progress h2 {
+    color: var(--secondary-color);
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+}
+
+.skill-description h2,
+.skill-projects h2,
+.skill-certifications h2 {
+    color: var(--secondary-color);
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+.skill-description ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.skill-description li {
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.skill-description li::before {
+    content: '•';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+
+.skill-projects a,
+.skill-certifications a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.skill-projects a:hover,
+.skill-certifications a:hover {
+    color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+    .skill-details h1 {
+        font-size: 2em;
+    }
+
+    .skill-progress h2,
+    .skill-description h2,
+    .skill-projects h2,
+    .skill-certifications h2 {
+        font-size: 1.5em;
+    }
+}

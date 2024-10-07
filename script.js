@@ -298,4 +298,24 @@
     window.addEventListener('resize', setMobileViewportHeight);
     setMobileViewportHeight();
 
+    // Add this function to your existing script.js file
+
+    function initializeSkillPages() {
+        const skillProgress = document.querySelector('.skill-progress .progress');
+        
+        if (skillProgress) {
+            const skillLevel = parseInt(skillProgress.getAttribute('aria-valuenow'));
+            skillProgress.style.width = `${skillLevel}%`;
+            
+            // Animate the progress bar
+            setTimeout(() => {
+                skillProgress.style.transition = 'width 1s ease-in-out';
+                skillProgress.style.width = `${skillLevel}%`;
+            }, 100);
+        }
+    }
+
+    // Call this function when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', initializeSkillPages);
+  
   });
