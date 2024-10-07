@@ -18,23 +18,37 @@ yearSpan.textContent = currentYear;
 const themeToggleBtn = document.getElementById('theme-toggle');
 const body = document.body;
 
-// Initialize theme based on localStorage
-if (localStorage.getItem('theme') === 'dark') {
-body.classList.add('dark-theme');
-themeToggleBtn.innerHTML = '<i class="fas fa-sun" aria-hidden="true"></i>';
-} else {
-themeToggleBtn.innerHTML = '<i class="fas fa-moon" aria-hidden="true"></i>';
+// Function to set theme
+function setTheme(theme) {
+    if (theme === 'dark') {
+        body.classList.add('dark-theme');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.remove('dark-theme');
+        localStorage.setItem('theme', 'light');
+    }
 }
 
-themeToggleBtn.addEventListener('click', () => {
-body.classList.toggle('dark-theme');
-if (body.classList.contains('dark-theme')) {
-localStorage.setItem('theme', 'dark');
-themeToggleBtn.innerHTML = '<i class="fas fa-sun" aria-hidden="true"></i>';
+// Initialize theme based on localStorage or system preference
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    setTheme(savedTheme);
 } else {
-localStorage.setItem('theme', 'light');
-themeToggleBtn.innerHTML = '<i class="fas fa-moon" aria-hidden="true"></i>';
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+    } else {
+        setTheme('light');
+    }
 }
+
+// Toggle theme when button is clicked
+themeToggleBtn.addEventListener('click', () => {
+    if (body.classList.contains('dark-theme')) {
+        setTheme('light');
+    } else {
+        setTheme('dark');
+    }
 });
 
 // Back to Top Button Functionality
