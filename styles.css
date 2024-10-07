@@ -559,31 +559,116 @@ body.dark-theme #theme-toggle .sun-icon {
 
 /* Footer Styles */
 footer {
-    background-color: rgba(51, 51, 51, 0.8);
-    padding: 20px 0;
-    text-align: center;
+    background-color: var(--secondary-bg-color);
     color: var(--text-color);
-    position: relative;
+    padding: 3rem 0 0;
+    border-top: 2px solid var(--accent-color);
 }
 
-footer p {
-    margin: 0;
-    font-size: 0.9em;
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.footer-info, .footer-nav, .footer-contact {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-info h3 {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-nav h4, .footer-contact h4 {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footer-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-nav ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-nav ul li a, .footer-contact a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-nav ul li a:hover, .footer-contact a:hover {
+    color: var(--accent-color);
+}
+
+.footer-social {
+    margin-top: 1rem;
 }
 
 .footer-social a {
-    margin: 0 10px;
-    color: var(--accent-color);
-    text-decoration: none;
-    font-size: 1.2em;
-    transition: color var(--transition-speed), transform var(--transition-speed);
-    display: inline-block;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    transition: color 0.3s ease;
 }
 
-.footer-social a:hover,
-.footer-social a:focus {
-    color: var(--tertiary-color);
-    transform: scale(1.2) rotate(5deg);
+.footer-social a:hover {
+    color: var(--accent-color);
+}
+
+.footer-bottom {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+.footer-legal ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-legal ul li {
+    margin: 0 1rem;
+}
+
+.footer-legal ul li a {
+    color: var(--text-color-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-legal ul li a:hover {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-info, .footer-nav, .footer-contact {
+        text-align: center;
+    }
+
+    .footer-legal ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-legal ul li {
+        margin: 0.5rem 0;
+    }
 }
 
 /* Back to Top Button */
@@ -1059,5 +1144,119 @@ p {
 
   nav ul.show {
     display: flex;
+  }
+}
+
+/* Add these styles to your existing CSS file */
+
+.contact {
+  background-color: var(--secondary-bg-color);
+  padding: 4rem 0;
+  border-top: 2px solid var(--accent-color);
+}
+
+.contact h2 {
+  text-align: center;
+  color: var(--accent-color);
+  margin-bottom: 2rem;
+}
+
+.contact-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.contact-info, .contact-form {
+  flex: 1;
+}
+
+.contact-info h3 {
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+}
+
+.contact-info p {
+  margin-bottom: 1.5rem;
+}
+
+.contact-details {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.contact-details li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.contact-details i {
+  color: var(--accent-color);
+  margin-right: 0.5rem;
+  width: 20px;
+}
+
+.contact-social a {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  transition: color 0.3s ease;
+}
+
+.contact-social a:hover {
+  color: var(--accent-color);
+}
+
+.contact-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form .btn {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form .btn:hover {
+  background-color: var(--secondary-color);
+}
+
+#form-status {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .contact-content {
+    flex-direction: column;
+  }
+
+  .contact-info, .contact-form {
+    width: 100%;
   }
 }

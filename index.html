@@ -304,49 +304,90 @@ I'm Lucius Morningstar, a passionate developer and designer specializing in crea
 </div>
 </section>
 
+
 <!-- Contact Section -->
 <section class="contact" id="contact" role="region" aria-labelledby="contact-heading">
-<div class="container">
-<h2 id="contact-heading">Contact Me</h2>
-<form id="contact-form" class="contact-form" aria-label="Contact Form">
-<div class="form-group">
-<label for="name">Name<span aria-hidden="true">*</span></label>
-<input type="text" id="name" name="name" required aria-required="true" aria-label="Your Name">
-</div>
-<div class="form-group">
-<label for="email">Email<span aria-hidden="true">*</span></label>
-<input type="email" id="email" name="email" required aria-required="true" aria-label="Your Email">
-</div>
-<div class="form-group">
-<label for="message">Message<span aria-hidden="true">*</span></label>
-<textarea id="message" name="message" rows="5" required aria-required="true" aria-label="Your Message"></textarea>
-</div>
-<button type="submit" class="btn" aria-label="Send Message">Send Message</button>
-<p id="form-status" role="status" aria-live="polite"></p>
-</form>
-</div>
+  <div class="container">
+    <h2 id="contact-heading">Contact Me</h2>
+    <div class="contact-content">
+      <div class="contact-info">
+        <h3>Get in Touch</h3>
+        <p>I'm always open to new opportunities and collaborations. Feel free to reach out!</p>
+        <ul class="contact-details">
+          <li><i class="fas fa-envelope"></i> <a href="mailto:lucius@morningstar.dev">lucius@morningstar.dev</a></li>
+          <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+          <li><i class="fas fa-map-marker-alt"></i> Neo-Tokyo, Cyberpunk District</li>
+        </ul>
+        <div class="contact-social">
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+        </div>
+      </div>
+      <form id="contact-form" class="contact-form" aria-label="Contact Form">
+        <div class="form-group">
+          <label for="name">Name<span aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" required aria-required="true" aria-label="Your Name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email<span aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" required aria-required="true" aria-label="Your Email">
+        </div>
+        <div class="form-group">
+          <label for="message">Message<span aria-hidden="true">*</span></label>
+          <textarea id="message" name="message" rows="5" required aria-required="true" aria-label="Your Message"></textarea>
+        </div>
+        <button type="submit" class="btn" aria-label="Send Message">Send Message</button>
+      </form>
+    </div>
+    <p id="form-status" role="status" aria-live="polite"></p>
+  </div>
 </section>
 
 <!-- Footer -->
 <footer role="contentinfo">
-<div class="container">
-<p>&copy; 2024 Copyright Morningstar Developments LLC. All rights reserved.</p>
-<nav class="footer-nav">
-<ul>
-<li><a href="/privacy-policy" aria-label="Privacy Policy">Privacy Policy</a></li>
-<li><a href="/terms-of-service" aria-label="Terms of Service">Terms of Service</a></li>
-<li><a href="/cookie-policy" aria-label="Cookie Policy">Cookie Policy</a></li>
-<li><a href="/license" aria-label="License Information">License</a></li>
-<li><a href="/sitemap" aria-label="Sitemap">Sitemap</a></li>
-</ul>
-</nav>
-<div class="footer-social">
-<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-<a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-<a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-<a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
-</div>
-</div>
+  <div class="container footer-content">
+    <div class="footer-info">
+      <h3>Lucius Morningstar</h3>
+      <p>Cyberpunk Visionary | Code Architect | Neuro-Philosopher</p>
+      <p>&copy; <span id="current-year"></span> Morningstar Developments LLC. All rights reserved.</p>
+    </div>
+    <nav class="footer-nav">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:lucius@morningstar.dev">lucius@morningstar.dev</a></p>
+      <p>Phone: +1 (555) 123-4567</p>
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <nav class="footer-legal">
+        <ul>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/terms-of-service">Terms of Service</a></li>
+          <li><a href="/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/sitemap">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 </footer>
 
 <!-- Back to Top Button -->
