@@ -16,46 +16,44 @@
   
     // Theme Toggle Functionality
     const themeToggleBtn = document.getElementById('theme-toggle');
-  
-    // Function to set theme
-    function setTheme(theme) {
-      if (theme === 'dark') {
-        document.body.classList.add('dark-theme');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.body.classList.remove('dark-theme');
-        localStorage.setItem('theme', 'light');
-      }
+    const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+    const body = document.body;
+
+    function setTheme(isDark) {
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        body.classList.toggle('dark-theme', isDark);
+        localStorage.setItem('dark-theme', isDark);
+        
+        // Update both the button and checkbox
+        themeToggleBtn.setAttribute('aria-pressed', isDark);
+        themeToggleCheckbox.checked = isDark;
     }
-  
-    // Initialize theme based on localStorage or system preference
-    function initializeTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        setTheme(savedTheme);
-      } else {
-        // Check system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          setTheme('dark');
-        } else {
-          setTheme('light');
-        }
-      }
+
+    // Check for saved theme preference or prefer-color-scheme
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('dark-theme');
+
+    if (savedTheme !== null) {
+        setTheme(savedTheme === 'true');
+    } else {
+        setTheme(prefersDarkScheme.matches);
     }
-  
-    // Toggle theme when button is clicked
-    function setupThemeToggle() {
-      if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-          if (document.body.classList.contains('dark-theme')) {
-            setTheme('light');
-          } else {
-            setTheme('dark');
-          }
-        });
-      }
-    }
-  
+
+    // Event listener for the button
+    themeToggleBtn.addEventListener('click', () => {
+        setTheme(!body.classList.contains('dark-theme'));
+    });
+
+    // Event listener for the checkbox
+    themeToggleCheckbox.addEventListener('change', (e) => {
+        setTheme(e.target.checked);
+    });
+
+    // Listen for changes in color scheme preference
+    prefersDarkScheme.addEventListener('change', (e) => {
+        setTheme(e.matches);
+    });
+
     // Call these functions when the DOM is fully loaded
     initializeTheme();
     setupThemeToggle();
@@ -255,4 +253,3 @@
       });
     }
   });
-  

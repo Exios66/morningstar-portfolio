@@ -16,12 +16,23 @@
     --body-font: 'Roboto', sans-serif;
 }
 
+/* Add these rules near the top of your CSS file, after the existing :root block */
+:root[data-theme='dark'] {
+  --background-color: #121212;
+  --text-color: #ffffff;
+}
+
+:root[data-theme='light'] {
+  --background-color: #ffffff;
+  --text-color: #000000;
+}
+
 body {
     font-family: var(--body-font);
     line-height: 1.6;
     margin: 0;
     padding: 20px;
-    background-color: var(--bg-color);
+    background-color: var(--background-color);
     color: var(--text-color);
     transition: background-color var(--transition-speed), color var(--transition-speed);
 }
