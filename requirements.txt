@@ -1,0 +1,7 @@
+# Python version
+python>=3.7
+
+# No external libraries are required for the current changelog_updater.py script.
+# If you add any external dependencies in the future, list them here, for example:
+# requests==2.25.1
+# PyYAML==5.4.1
