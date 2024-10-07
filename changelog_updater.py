@@ -58,42 +58,43 @@ def increment_version(version: str) -> str:
 
 def get_commit_messages() -> List[str]:
     """
-    Retrieve commit messages since the last version tag.
+    Retrieve commit messages since the last version tag or from the beginning if no tags exist.
     
     Returns:
         List[str]: A list of commit messages.
     """
     try:
-        # Get the latest tag
-        latest_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], stderr=subprocess.DEVNULL).decode().strip()
-        logger.info(f"Latest tag: {latest_tag}")
+        # Try to get the latest tag
+        try:
+            latest_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], stderr=subprocess.DEVNULL).decode().strip()
+            logger.info(f"Latest tag: {latest_tag}")
+            commit_range = f'{latest_tag}..HEAD'
+        except subprocess.CalledProcessError:
+            logger.warning("No tags found. Getting all commit messages.")
+            commit_range = 'HEAD'
 
-        # Get commit messages since the latest tag
-        commit_messages = subprocess.check_output(['git', 'log', f'{latest_tag}..HEAD', '--pretty=format:%s']).decode().split('\n')
-        
+        # Get commit messages
+        try:
+            commit_messages = subprocess.check_output(['git', 'log', commit_range, '--pretty=format:%s']).decode().split('\n')
+        except subprocess.CalledProcessError:
+            logger.warning("Error getting commit messages with range. Trying to get all commits.")
+            commit_messages = subprocess.check_output(['git', 'log', '--pretty=format:%s']).decode().split('\n')
+
         # Filter out empty messages
         commit_messages = [msg for msg in commit_messages if msg.strip()]
         
         if not commit_messages:
-            logger.warning("No new commit messages found since the last tag.")
+            logger.warning("No commit messages found.")
             return ["No new changes"]
 
         logger.info(f"Retrieved {len(commit_messages)} commit messages")
         return commit_messages
     except subprocess.CalledProcessError as e:
-        if 'fatal: No names found, cannot describe anything.' in str(e.stderr):
-            logger.warning("No tags found. Getting all commit messages.")
-            try:
-                commit_messages = subprocess.check_output(['git', 'log', '--pretty=format:%s']).decode().split('\n')
-                commit_messages = [msg for msg in commit_messages if msg.strip()]
-                logger.info(f"Retrieved {len(commit_messages)} commit messages")
-                return commit_messages
-            except subprocess.CalledProcessError as e:
-                logger.error(f"Error getting commit messages: {e}")
-                return ["Error retrieving commit messages"]
-        else:
-            logger.error(f"Error getting commit messages: {e}")
-            return ["Error retrieving commit messages"]
+        logger.error(f"Error executing git command: {e}")
+        return ["Error retrieving commit messages"]
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return ["Error retrieving commit messages"]
 
 def update_changelog(new_version: str, commit_messages: List[str]) -> None:
     """
@@ -141,6 +142,13 @@ def main() -> None:
     Main function to orchestrate the changelog update process.
     """
     try:
+        # Check if we're in a Git repository
+        try:
+            subprocess.check_output(['git', 'rev-parse', '--is-inside-work-tree'], stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError:
+            logger.error("Not in a Git repository. Please run this script from within a Git repository.")
+            return
+
         # Change to the root directory of the Git repository
         repo_root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).decode().strip()
         os.chdir(repo_root)
