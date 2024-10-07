@@ -2,12 +2,12 @@ import os
 import re
 import subprocess
 from datetime import datetime
-import logging
 from typing import List, Optional
+from logger import logger  # Import the logger from logger.py
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+# Remove the existing logging configuration
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logger = logging.getLogger(__name__)
 
 # Get the directory of the script
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -166,7 +166,7 @@ def main() -> None:
         update_changelog(new_version, commit_messages)
         logger.info(f"CHANGELOG.md updated successfully with version {new_version}")
     except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}")
+        logger.error(f"An unexpected error occurred: {e}", exc_info=True)
 
 if __name__ == "__main__":
     main()
