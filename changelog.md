@@ -1,6 +1,11 @@
-## [0.0.2] - 2024-10-07
+## [1.0.1] - 2024-10-07
 
-### Added
+# Changelog
+
+## [0.0.2] - 2024-10-07 {#version-0-0-2}
+
+### Added in [0.0.2]
+
 - feat: Update changelog and add new content
 - [v 1.9.2]
 - [v 1.9.2]
@@ -34,11 +39,9 @@
 - v1.0.0 chore: Add email form submission handling with EmailJS
 - Initial commit
 
-# Changelog
+## [0.0.1] - 2024-10-07 {#version-0-0-1}
 
-## [0.0.1] - 2024-10-07
-
-### Added
+### Added in [0.0.1]
 
 - [v 1.9.2]
 - feat: Add skill pages and update main site [v 1.9.1]
@@ -70,4 +73,3 @@
 - Initial commit
 - v1.0.0 chore: Add email form submission handling with EmailJS
 - Initial commit
-

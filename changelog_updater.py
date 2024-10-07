@@ -1,172 +1,117 @@
 import os
-import re
 import subprocess
 from datetime import datetime
-from typing import List, Optional
-from logger import logger  # Import the logger from logger.py
+from logger import logger, log_automation_start, log_changelog_update, log_automation_end
 
-# Remove the existing logging configuration
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-# logger = logging.getLogger(__name__)
+def read_changelog():
+    """Read the existing changelog file"""
+    changelog_path = 'changelog.md'
+    if os.path.exists(changelog_path):
+        with open(changelog_path, 'r') as file:
+            return file.read()
+    return ""
 
-# Get the directory of the script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-# Set the path to CHANGELOG.md relative to the script location
-changelog_path = os.path.join(script_dir, 'CHANGELOG.md')
+def write_changelog(content):
+    """Write the updated changelog to the file"""
+    with open('changelog.md', 'w') as file:
+        file.write(content)
 
-def get_current_version() -> str:
-    """
-    Retrieve the current version from the CHANGELOG.md file.
-    
-    Returns:
-        str: The current version number or "0.0.0" if not found.
-    """
+def get_last_version():
+    """Get the last version from the changelog"""
+    changelog = read_changelog()
+    lines = changelog.split('\n')
+    for line in lines:
+        if line.startswith('## ['):
+            return line.split('[')[1].split(']')[0]
+    return None
+
+def run_git_command(cmd):
+    """Run a git command and return the output"""
     try:
-        with open(changelog_path, 'r') as f:
-            content = f.read()
-            match = re.search(r'## \[(\d+\.\d+\.\d+)\]', content)
-            if match:
-                version = match.group(1)
-                logger.info(f"Current version found: {version}")
-                return version
-    except FileNotFoundError:
-        logger.warning(f"CHANGELOG.md not found at {changelog_path}. A new one will be created.")
-    except Exception as e:
-        logger.error(f"Error reading CHANGELOG.md: {e}")
-    
-    logger.info("Defaulting to version 0.0.0")
-    return "0.0.0"
-
-def increment_version(version: str) -> str:
-    """
-    Increment the patch number of the given version.
-    
-    Args:
-        version (str): The current version number.
-    
-    Returns:
-        str: The incremented version number.
-    """
-    try:
-        major, minor, patch = map(int, version.split('.'))
-        new_version = f"{major}.{minor}.{patch + 1}"
-        logger.info(f"Incremented version from {version} to {new_version}")
-        return new_version
-    except ValueError:
-        logger.error(f"Invalid version format: {version}")
-        return "0.0.1"
-
-def get_commit_messages() -> List[str]:
-    """
-    Retrieve commit messages since the last version tag or from the beginning if no tags exist.
-    
-    Returns:
-        List[str]: A list of commit messages.
-    """
-    try:
-        # Try to get the latest tag
-        try:
-            latest_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], stderr=subprocess.DEVNULL).decode().strip()
-            logger.info(f"Latest tag: {latest_tag}")
-            commit_range = f'{latest_tag}..HEAD'
-        except subprocess.CalledProcessError:
-            logger.warning("No tags found. Getting all commit messages.")
-            commit_range = 'HEAD'
-
-        # Get commit messages
-        try:
-            commit_messages = subprocess.check_output(['git', 'log', commit_range, '--pretty=format:%s']).decode().split('\n')
-        except subprocess.CalledProcessError:
-            logger.warning("Error getting commit messages with range. Trying to get all commits.")
-            commit_messages = subprocess.check_output(['git', 'log', '--pretty=format:%s']).decode().split('\n')
-
-        # Filter out empty messages
-        commit_messages = [msg for msg in commit_messages if msg.strip()]
-        
-        if not commit_messages:
-            logger.warning("No commit messages found.")
-            return ["No new changes"]
-
-        logger.info(f"Retrieved {len(commit_messages)} commit messages")
-        return commit_messages
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return result.stdout.strip()
     except subprocess.CalledProcessError as e:
-        logger.error(f"Error executing git command: {e}")
-        return ["Error retrieving commit messages"]
-    except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        return ["Error retrieving commit messages"]
+        logger.error(f"Error running git command {' '.join(cmd)}: {e}")
+        return None
 
-def update_changelog(new_version: str, commit_messages: List[str]) -> None:
-    """
-    Update the CHANGELOG.md file with the new version and commit messages.
+def get_commits_since_last_version(last_version):
+    """Get commits since the last version"""
+    if last_version:
+        cmd = ['git', 'log', f'{last_version}..HEAD', '--oneline']
+    else:
+        cmd = ['git', 'log', '--oneline']
     
-    Args:
-        new_version (str): The new version number.
-        commit_messages (List[str]): List of commit messages to add.
-    """
-    today = datetime.now().strftime("%Y-%m-%d")
-    new_entry = f"""## [{new_version}] - {today}
+    commits = run_git_command(cmd)
+    return commits.split('\n') if commits else []
 
-### Added
-{format_commit_messages(commit_messages)}
+def generate_new_version(last_version):
+    """Generate a new version number"""
+    if last_version:
+        parts = last_version.split('.')
+        parts[-1] = str(int(parts[-1]) + 1)
+        return '.'.join(parts)
+    return '0.1.0'
 
-"""
+def get_git_info():
+    """Get git repository information"""
+    current_branch = run_git_command(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    last_commit = run_git_command(['git', 'log', '-1', '--oneline'])
+    return f"Current branch: {current_branch}\nLast commit: {last_commit}"
+
+def update_changelog():
+    log_automation_start("Changelog Updater")
+    
     try:
-        if os.path.exists(changelog_path):
-            with open(changelog_path, 'r+') as f:
-                content = f.read()
-                f.seek(0, 0)
-                f.write(new_entry + content)
-            logger.info(f"Updated existing CHANGELOG.md with version {new_version}")
-        else:
-            with open(changelog_path, 'w') as f:
-                f.write(new_entry)
-            logger.info(f"Created new CHANGELOG.md with version {new_version}")
-    except IOError as e:
-        logger.error(f"Error updating CHANGELOG.md: {e}")
-
-def format_commit_messages(messages: List[str]) -> str:
-    """
-    Format commit messages for the changelog.
-    
-    Args:
-        messages (List[str]): List of commit messages.
-    
-    Returns:
-        str: Formatted commit messages.
-    """
-    return "\n".join(f"- {msg}" for msg in messages if msg.strip())
-
-def main() -> None:
-    """
-    Main function to orchestrate the changelog update process.
-    """
-    try:
-        # Check if we're in a Git repository
-        try:
-            subprocess.check_output(['git', 'rev-parse', '--is-inside-work-tree'], stderr=subprocess.DEVNULL)
-        except subprocess.CalledProcessError:
-            logger.error("Not in a Git repository. Please run this script from within a Git repository.")
+        # Check if git repository exists
+        if not os.path.exists('.git'):
+            logger.error("No git repository found in the current directory.")
+            log_automation_end("Changelog Updater", "Failed - No git repository")
             return
 
-        # Change to the root directory of the Git repository
-        repo_root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).decode().strip()
-        os.chdir(repo_root)
-        logger.info(f"Changed working directory to: {repo_root}")
+        # Log git repository information
+        logger.info("Git repository information:\n" + get_git_info())
 
-        current_version = get_current_version()
-        logger.info(f"Current version: {current_version}")
-        
-        new_version = increment_version(current_version)
-        logger.info(f"New version: {new_version}")
-        
-        commit_messages = get_commit_messages()
-        logger.debug(f"Commit messages: {commit_messages[:5]}...")  # Log first 5 messages
-        
-        update_changelog(new_version, commit_messages)
-        logger.info(f"CHANGELOG.md updated successfully with version {new_version}")
+        # Read the existing changelog
+        existing_changelog = read_changelog()
+
+        # Get the last version
+        last_version = get_last_version()
+        logger.info(f"Last version found in changelog: {last_version}")
+
+        # Generate new version
+        new_version = generate_new_version(last_version)
+        logger.info(f"New version generated: {new_version}")
+
+        # Get commits since last version
+        commits = get_commits_since_last_version(last_version)
+
+        if not commits:
+            logger.info("No new commits found. Changelog not updated.")
+            log_automation_end("Changelog Updater", "Completed - No changes")
+            return
+
+        # Format the new changelog entry
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        new_entry = f"## [{new_version}] - {current_date}\n"
+        for commit in commits:
+            new_entry += f"- {commit}\n"
+        new_entry += "\n"
+
+        # Prepend the new entry to the existing changelog
+        updated_changelog = new_entry + existing_changelog
+
+        # Write the updated changelog
+        write_changelog(updated_changelog)
+
+        # Log the changes
+        log_changelog_update(new_version, commits)
+
+        log_automation_end("Changelog Updater", "Completed")
+        logger.info("Changelog updated successfully!")
+
     except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}", exc_info=True)
+        logger.error(f"An error occurred while updating the changelog: {str(e)}")
+        log_automation_end("Changelog Updater", "Failed")
 
 if __name__ == "__main__":
-    main()
+    update_changelog()
