@@ -4,23 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Three - Lucius Morningstar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <header>
-        <h1>Project Three</h1>
-        <a href="../index.html#projects">Back to Projects</a>
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" type="button" aria-label="Toggle Dark/Light Theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
+
+    <header class="project-header">
+        <div class="container">
+            <h1>Project Three</h1>
+            <a href="../index.html#projects" class="btn btn-secondary">Back to Projects</a>
+        </div>
     </header>
-    <main>
-        <section>
-            <h2>Project Overview</h2>
-            <p>Detailed description of Project Three goes here.</p>
-        </section>
-        <!-- Add more sections as needed -->
+
+    <main class="project-content">
+        <div class="container">
+            <section>
+                <h2>Project Overview</h2>
+                <p>Detailed description of Project Three goes here.</p>
+            </section>
+            <!-- Add more sections as needed -->
+        </div>
     </main>
+
     <footer>
-        <p>&copy; 2024 Lucius Morningstar. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 Lucius Morningstar. All rights reserved.</p>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                </ul>
+            </nav>
+        </div>
     </footer>
+
     <script src="../script.js"></script>
 </body>
 </html>

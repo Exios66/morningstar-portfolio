@@ -147,3 +147,99 @@ console.error('FAILED...', error);
 });
 
 console.log("Script loaded successfully");
+
+// Skills Section Scroll Animation
+const skillsSection = document.querySelector('.skills');
+const skillsContainer = document.querySelector('.skills-container');
+
+if (skillsSection && skillsContainer) {
+    let isScrolling = false;
+    let startX;
+    let scrollLeft;
+
+    skillsContainer.addEventListener('mousedown', (e) => {
+        isScrolling = true;
+        startX = e.pageX - skillsContainer.offsetLeft;
+        scrollLeft = skillsContainer.scrollLeft;
+    });
+
+    skillsContainer.addEventListener('mouseleave', () => {
+        isScrolling = false;
+    });
+
+    skillsContainer.addEventListener('mouseup', () => {
+        isScrolling = false;
+    });
+
+    skillsContainer.addEventListener('mousemove', (e) => {
+        if (!isScrolling) return;
+        e.preventDefault();
+        const x = e.pageX - skillsContainer.offsetLeft;
+        const walk = (x - startX) * 2;
+        skillsContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // Automatic scroll on page scroll
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const skillsSectionTop = skillsSection.offsetTop;
+        const skillsSectionHeight = skillsSection.offsetHeight;
+        const windowHeight = window.innerHeight;
+
+        if (scrollPosition > skillsSectionTop - windowHeight / 2 && 
+            scrollPosition < skillsSectionTop + skillsSectionHeight - windowHeight / 2) {
+            const scrollPercentage = (scrollPosition - (skillsSectionTop - windowHeight / 2)) / 
+                                     (skillsSectionHeight + windowHeight);
+            const scrollAmount = scrollPercentage * (skillsContainer.scrollWidth - skillsContainer.clientWidth);
+            skillsContainer.scrollLeft = scrollAmount;
+        }
+    });
+}
+
+// Services Section Scroll Animation
+const servicesSection = document.querySelector('.services');
+const servicesContainer = document.querySelector('.services-container');
+
+if (servicesSection && servicesContainer) {
+    let isScrolling = false;
+    let startX;
+    let scrollLeft;
+
+    servicesContainer.addEventListener('mousedown', (e) => {
+        isScrolling = true;
+        startX = e.pageX - servicesContainer.offsetLeft;
+        scrollLeft = servicesContainer.scrollLeft;
+    });
+
+    servicesContainer.addEventListener('mouseleave', () => {
+        isScrolling = false;
+    });
+
+    servicesContainer.addEventListener('mouseup', () => {
+        isScrolling = false;
+    });
+
+    servicesContainer.addEventListener('mousemove', (e) => {
+        if (!isScrolling) return;
+        e.preventDefault();
+        const x = e.pageX - servicesContainer.offsetLeft;
+        const walk = (x - startX) * 2;
+        servicesContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // Automatic scroll on page scroll
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const servicesSectionTop = servicesSection.offsetTop;
+        const servicesSectionHeight = servicesSection.offsetHeight;
+        const windowHeight = window.innerHeight;
+
+        if (scrollPosition > servicesSectionTop - windowHeight / 2 && 
+            scrollPosition < servicesSectionTop + servicesSectionHeight - windowHeight / 2) {
+            const scrollPercentage = (scrollPosition - (servicesSectionTop - windowHeight / 2)) / 
+                                     (servicesSectionHeight + windowHeight);
+            const scrollAmount = scrollPercentage * (servicesContainer.scrollWidth - servicesContainer.clientWidth);
+            servicesContainer.scrollLeft = scrollAmount;
+        }
+    });
+}

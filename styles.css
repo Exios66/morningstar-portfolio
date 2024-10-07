@@ -1,6 +1,6 @@
 /* styles.css */
 
-/* CSS Variables for Theming */
+/* Add these rules at the top of your CSS file */
 :root {
     --bg-color: #0a0a1e;
     --text-color: #00ffff;
@@ -14,16 +14,19 @@
     --transition-speed: 0.3s;
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     --border-radius: 8px;
+    --heading-font: 'Orbitron', sans-serif;
+    --body-font: 'Roboto', sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--body-font);
     line-height: 1.6;
     margin: 0;
     padding: 20px;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font);
     color: #333;
 }
 
@@ -136,6 +139,7 @@ nav ul li {
 }
 
 nav ul li a {
+    font-family: var(--heading-font);
     color: var(--secondary-color);
     text-decoration: none;
     font-size: 1.2em;
@@ -187,7 +191,8 @@ nav ul li a:focus {
 body:not(.dark-theme) #theme-toggle .sun-icon,
 body.dark-theme #theme-toggle .moon-icon {
     opacity: 1;
-    transform: scale(1);
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
 }
 
 body:not(.dark-theme) #theme-toggle .moon-icon,
@@ -264,8 +269,8 @@ body {
 
 /* Services Section */
 .services {
-    background-color: rgba(51, 51, 51, 0.6);
     padding: 50px 0;
+    overflow: hidden;
 }
 
 .services h2 {
@@ -277,18 +282,29 @@ body {
     letter-spacing: 2px;
 }
 
+.services-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.services-container::-webkit-scrollbar { 
+    display: none;  /* WebKit */
+}
+
 .service {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 20px;
+    scroll-snap-align: start;
     background-color: rgba(51, 51, 51, 0.8);
-    padding: 30px;
-    margin: 10px;
+    padding: 20px;
     border-radius: var(--border-radius);
-    width: calc(33.333% - 20px);
-    box-sizing: border-box;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    text-align: center;
     box-shadow: var(--box-shadow);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .service:hover,
@@ -318,6 +334,7 @@ body {
 /* Skills Section */
 .skills {
     padding: 50px 0;
+    overflow: hidden;
 }
 
 .skills h2 {
@@ -329,16 +346,28 @@ body {
     letter-spacing: 2px;
 }
 
+.skills-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    overflow-x: auto; /* Ensure horizontal scrolling is enabled */
+}
+
+.skills-container::-webkit-scrollbar { 
+    display: none;  /* WebKit */
+}
+
 .skill {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 20px;
+    scroll-snap-align: start;
     background-color: rgba(51, 51, 51, 0.8);
     padding: 20px;
-    margin: 10px 0;
     border-radius: var(--border-radius);
-    width: 100%;
-    box-sizing: border-box;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
     box-shadow: var(--box-shadow);
 }
 
@@ -365,14 +394,6 @@ body {
     width: 0;
     background-color: var(--accent-color);
     animation: fillProgress 1.5s forwards;
-}
-
-.skill:nth-child(odd) .progress::after {
-    animation-delay: 0.3s;
-}
-
-.skill:nth-child(even) .progress::after {
-    animation-delay: 0.6s;
 }
 
 @keyframes fillProgress {
@@ -438,18 +459,18 @@ body {
 
 .project-info h3 {
     color: var(--accent-color);
-    margin-bottom: 10px;
     font-size: 1.5em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px var(--accent-color);
 }
 
 .project-info p {
     color: var(--text-color);
-    font-size: 1em;
     margin-bottom: 15px;
-    line-height: 1.6;
 }
 
 .project-info .btn {
+    font-family: var(--heading-font);
     background-color: var(--accent-color);
     color: var(--bg-color);
     padding: 10px 20px;
@@ -520,20 +541,27 @@ body {
     text-align: center;
 }
 
-.blog-info h3 {
+.blog-info h3 a {
     color: var(--accent-color);
-    margin-bottom: 10px;
     font-size: 1.3em;
+    text-decoration: none;
+    transition: color 0.3s, text-shadow 0.3s;
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+.blog-info h3 a:hover,
+.blog-info h3 a:focus {
+    color: var(--secondary-color);
+    text-shadow: 0 0 8px var(--secondary-color);
 }
 
 .blog-info p {
     color: var(--text-color);
-    font-size: 0.95em;
-    margin-bottom: 10px;
-    line-height: 1.6;
+    margin-bottom: 15px;
 }
 
 .blog-info .btn {
+    font-family: var(--heading-font);
     background-color: var(--accent-color);
     color: var(--bg-color);
     padding: 8px 15px;
@@ -644,6 +672,7 @@ body {
 }
 
 .contact-form .btn {
+    font-family: var(--heading-font);
     background-color: var(--accent-color);
     color: var(--bg-color);
     border: none;
@@ -854,18 +883,28 @@ footer p {
 
 /* Blog Post Styles */
 .blog-header {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
+    background-color: var(--bg-color);
+    color: var(--accent-color);
     padding: 50px 0;
     text-align: center;
+    border-bottom: 2px solid var(--accent-color);
 }
 
 .blog-header h1 {
     margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--accent-color);
 }
 
 .blog-content {
     padding: 50px 0;
+    color: var(--text-color);
+}
+
+.blog-content h2 {
+    color: var(--secondary-color);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
 .featured-image {
@@ -923,4 +962,27 @@ footer p {
     .blog-text {
         font-size: 1em;
     }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.skills-container::-webkit-scrollbar {
+    display: none;
+}
+
+h1 {
+    font-size: 3.5em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+h2 {
+    font-size: 2.5em;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+}
+
+p {
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.6;
 }
