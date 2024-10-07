@@ -1,3 +1,6 @@
+## [2024-10-07]
+- chore: Update changelog workflow
+
 ## [1.0.1] - 2024-10-07
 
 # Changelog

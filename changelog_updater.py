@@ -1,116 +1,54 @@
 import os
-import subprocess
 from datetime import datetime
-from logger import logger, log_automation_start, log_changelog_update, log_automation_end
+import re
 
-def read_changelog():
-    """Read the existing changelog file"""
-    changelog_path = 'changelog.md'
-    if os.path.exists(changelog_path):
-        with open(changelog_path, 'r') as file:
-            return file.read()
-    return ""
+def get_latest_version(content):
+    version_pattern = r'## \[(\d+\.\d+\.\d+)\]'
+    matches = re.findall(version_pattern, content)
+    if matches:
+        return matches[0]
+    return '0.0.0'
 
-def write_changelog(content):
-    """Write the updated changelog to the file"""
-    with open('changelog.md', 'w') as file:
-        file.write(content)
-
-def get_last_version():
-    """Get the last version from the changelog"""
-    changelog = read_changelog()
-    lines = changelog.split('\n')
-    for line in lines:
-        if line.startswith('## ['):
-            return line.split('[')[1].split(']')[0]
-    return None
-
-def run_git_command(cmd):
-    """Run a git command and return the output"""
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Error running git command {' '.join(cmd)}: {e}")
-        return None
-
-def get_commits_since_last_update():
-    """Get commits since the last update"""
-    last_commit_hash = run_git_command(['git', 'rev-list', '--max-count=1', 'HEAD'])
-    if last_commit_hash:
-        cmd = ['git', 'log', '--pretty=format:%h - %s', f'{last_commit_hash}..HEAD']
-        commits = run_git_command(cmd)
-        return commits.split('\n') if commits else []
-    return []
-
-def generate_new_version(last_version):
-    """Generate a new version number"""
-    if last_version:
-        parts = last_version.split('.')
-        parts[-1] = str(int(parts[-1]) + 1)
-        return '.'.join(parts)
-    return '0.1.0'
-
-def get_git_info():
-    """Get git repository information"""
-    current_branch = run_git_command(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
-    last_commit = run_git_command(['git', 'log', '-1', '--pretty=format:%h - %s'])
-    return f"Current branch: {current_branch}\nLast commit: {last_commit}"
+def increment_version(version):
+    major, minor, patch = map(int, version.split('.'))
+    patch += 1
+    if patch > 9:
+        patch = 0
+        minor += 1
+    if minor > 9:
+        minor = 0
+        major += 1
+    return f"{major}.{minor}.{patch}"
 
 def update_changelog():
-    log_automation_start("Changelog Updater")
+    changelog_path = 'CHANGELOG.md'
     
+    # Read the current CHANGELOG.md
     try:
-        # Check if git repository exists
-        if not os.path.exists('.git'):
-            logger.error("No git repository found in the current directory.")
-            log_automation_end("Changelog Updater", "Failed - No git repository")
-            return
+        with open(changelog_path, 'r') as file:
+            content = file.read()
+    except FileNotFoundError:
+        content = "# Changelog\n\nAll notable changes to this project will be documented in this file.\n\n"
 
-        # Log git repository information
-        logger.info("Git repository information:\n" + get_git_info())
+    # Get the latest version and increment it
+    latest_version = get_latest_version(content)
+    new_version = increment_version(latest_version)
 
-        # Read the existing changelog
-        existing_changelog = read_changelog()
+    # Get the latest commit message
+    commit_message = os.popen('git log -1 --pretty=%B').read().strip()
 
-        # Get the last version
-        last_version = get_last_version()
-        logger.info(f"Last version found in changelog: {last_version}")
+    # Format the new entry
+    today = datetime.now().strftime('%Y-%m-%d')
+    new_entry = f"## [{new_version}] - {today}\n\n### Added\n\n- {commit_message}\n\n"
 
-        # Generate new version
-        new_version = generate_new_version(last_version)
-        logger.info(f"New version generated: {new_version}")
+    # Add the new entry after the header
+    updated_content = re.sub(r'(# Changelog\n\n)', f'\\1{new_entry}', content)
 
-        # Get commits since last update
-        commits = get_commits_since_last_update()
+    # Write the updated content back to CHANGELOG.md
+    with open(changelog_path, 'w') as file:
+        file.write(updated_content)
 
-        if not commits:
-            logger.info("No new commits found. Changelog not updated.")
-            log_automation_end("Changelog Updater", "Completed - No changes")
-            return
-
-        # Format the new changelog entry
-        current_date = datetime.now().strftime("%Y-%m-%d")
-        new_entry = f"## [{new_version}] - {current_date}\n"
-        for commit in commits:
-            new_entry += f"- {commit}\n"
-        new_entry += "\n"
-
-        # Prepend the new entry to the existing changelog
-        updated_changelog = new_entry + existing_changelog
-
-        # Write the updated changelog
-        write_changelog(updated_changelog)
-
-        # Log the changes
-        log_changelog_update(new_version, commits)
-
-        log_automation_end("Changelog Updater", "Completed")
-        logger.info("Changelog updated successfully!")
-
-    except Exception as e:
-        logger.error(f"An error occurred while updating the changelog: {str(e)}")
-        log_automation_end("Changelog Updater", "Failed")
+    print(f"Changelog updated with version {new_version}")
 
 if __name__ == "__main__":
     update_changelog()
