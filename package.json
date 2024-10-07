@@ -1,9 +1,10 @@
 {
   "scripts": {
     "start": "live-server",
-    "build": "npm-run-all build:*",
-    "build:html": "cp index.html dist/",
-    "build:css": "cp styles.css dist/",
-    "build:js": "cp script.js dist/"
+    "build": "echo 'No build step needed, files are ready for deployment'"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "npm-run-all": "^4.1.5"
   }
 }
