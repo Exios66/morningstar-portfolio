@@ -22,9 +22,6 @@ coverage
 # IDEs and editors
 .idea/
 .vscode/
-*.swp
-*.swo
-*.sublime-workspace
 
 # Operating System Files
 .DS_Store
@@ -72,46 +69,15 @@ npm-debug.log*
 
 # dotenv environment variables file
 .env
-.env.test
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
 
 # Next.js build output
 .next
 
 # Nuxt.js build / generate output
 .nuxt
-dist/
-
-# Gatsby files
-.cache/
-public
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Virtual environment
-venv/
-
-# Python cache files
-*.pyc
-__pycache__/
 
 # Explicitly track .github directory and its contents
 !.github/
 !.github/*
 !.github/dark-triad-assessment.wiki
-!.github/dark-triad-assessment.wiki~7e9eb48
+!.github/dark-triad-assessments.wiki
