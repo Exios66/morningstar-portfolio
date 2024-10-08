@@ -1,0 +1,3 @@
+[submodule ".github/dark-triad-assessments.wiki"]
+    path = .github/dark-triad-assessments.wiki
+    url = https://github.com/your-username/your-repo-name.wiki.git

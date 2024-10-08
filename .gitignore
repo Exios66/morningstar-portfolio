@@ -22,6 +22,9 @@ coverage
 # IDEs and editors
 .idea/
 .vscode/
+*.swp
+*.swo
+*.sublime-workspace
 
 # Operating System Files
 .DS_Store
@@ -69,15 +72,34 @@ npm-debug.log*
 
 # dotenv environment variables file
 .env
+.env.local
+.env.*.local
 
-# Next.js build output
-.next
+# Build output
+.next/
+.nuxt/
+out/
 
-# Nuxt.js build / generate output
-.nuxt
+# Temporary files
+*.tmp
+*.temp
 
 # Explicitly track .github directory and its contents
 !.github/
 !.github/*
 !.github/dark-triad-assessment.wiki
 !.github/dark-triad-assessments.wiki
+
+# Yarn
+yarn-error.log
+.pnp/
+.pnp.js
+
+# npm
+npm-debug.log*
+
+# ESLint
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
