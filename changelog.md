@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.5] - 2024-10-08
+
+### Added
+
+- chore: Remove debug code and update Python version to 3.12
+
 ## [1.0.4] - 2024-10-08
 
 ### Added
