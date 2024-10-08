@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Data Visualization Calculator - Lucius Morningstar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Chart.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <style>
+        :root {
+            --primary-color: #ff00ff;
+            --secondary-color: #00ffff;
+            --background-color: #000033;
+            --text-color: #ffffff;
+            --container-bg: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            background-image: 
+                linear-gradient(45deg, #ff00ff 25%, transparent 25%),
+                linear-gradient(-45deg, #ff00ff 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ff00ff 75%),
+                linear-gradient(-45deg, transparent 75%, #ff00ff 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--container-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        label, select, input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        select, input[type="file"], input[type="text"] {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-color);
+            border: 1px solid var(--secondary-color);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            outline: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--text-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 80vh;
+            width: 80vw;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .filters label {
+            display: inline-flex;
+            align-items: center;
+            color: var(--secondary-color);
+            margin: 5px;
+        }
+
+        .filters input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        @keyframes neon-glow {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        h1, button {
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        /* Add styles for file input */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .file-input-wrapper .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="container">
+            <h1>Advanced Data Visualization Calculator</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="index.html" class="active">Calculator</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="file-input-wrapper">
+            <button class="btn" type="button" onclick="document.getElementById('fileUpload').click()">Choose CSV File</button>
+            <input type="file" id="fileUpload" accept=".csv" onchange="processCSV(event)" aria-label="Upload CSV file">
+        </div>
+
+        <label for="analysisType">Select the Statistical Analysis:</label>
+        <select id="analysisType" onchange="updateUI()">
+            <option value="basic">Basic Descriptive Statistics</option>
+            <option value="skewness">Skewness and Kurtosis</option>
+            <option value="cronbach">Cronbach's Alpha (Reliability)</option>
+            <option value="correlation">Correlation Coefficient (Pearson's r)</option>
+            <option value="ttest">T-Test (Compare Two Groups)</option>
+            <option value="anova">ANOVA (Analysis of Variance)</option>
+            <option value="regression">Linear Regression Analysis</option>
+            <option value="chisquare">Chi-Square Test</option>
+            <option value="factoranalysis">Factor Analysis</option>
+            <option value="mannwhitney">Mann-Whitney U Test</option>
+            <option value="cluster">Cluster Analysis</option>
+        </select>
+
+        <label for="chartType">Select Chart Type:</label>
+        <select id="chartType" onchange="updateChart()">
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+            <option value="pie">Pie Chart</option>
+            <option value="doughnut">Doughnut Chart</option>
+            <option value="radar">Radar Chart</option>
+            <option value="polarArea">Polar Area Chart</option>
+            <option value="scatter">Scatter Plot</option>
+            <option value="bubble">Bubble Chart</option>
+        </select>
+
+        <div id="dynamicInputs"></div>
+
+        <button onclick="runAnalysis()">Run Analysis</button>
+
+        <div class="filters" id="filterContainer"></div>
+
+        <div id="results"></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="chartCanvas"></canvas>
+    </div>
+
+    <button onclick="exportResults()">Export Results</button>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2024 Copyright Morningstar Developments LLC. All rights reserved.</p>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                    <li><a href="https://morningstar-developments.notion.site/" target="_blank" rel="noopener noreferrer">Notion Page</a></li>
+                    <li><a href="calculator.html">Calculator</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Update script sources -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        let chart;
+        let data = [];
+
+        function processCSV(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                data = Papa.parse(text, { header: true }).data;
+                updateUI();
+            };
+            reader.readAsText(file);
+        }
+
+        function updateUI() {
+            const analysisType = document.getElementById('analysisType').value;
+            const dynamicInputs = document.getElementById('dynamicInputs');
+            dynamicInputs.innerHTML = '';
+
+            switch (analysisType) {
+                case 'ttest':
+                case 'anova':
+                    addGroupInputs(2);
+                    break;
+                case 'regression':
+                    addVariableInputs(['Independent', 'Dependent']);
+                    break;
+                // Add more cases for other analysis types
+            }
+        }
+
+        function addGroupInputs(count) {
+            const dynamicInputs = document.getElementById('dynamicInputs');
+            for (let i = 1; i <= count; i++) {
+                const label = document.createElement('label');
+                label.htmlFor = `group${i}`;
+                label.textContent = `Enter Values for Group ${i}:`;
+                
+                const range = document.createElement('input');
+                range.type = 'range';
+                range.id = `group${i}`;
+                range.min = '50';
+                range.max = '100';
+                range.step = '5';
+                range.value = '75';
+                range.oninput = function() { this.nextElementSibling.value = this.value; };
+
+                const text = document.createElement('input');
+                text.type = 'text';
+                text.id = `group${i}Value`;
+                text.value = '75';
+                text.oninput = function() {
+                    let val = parseInt(this.value);
+                    if (val < 50 || val > 100) {
+                        alert("Value must be between 50 and 100");
+                        this.value = 75;
+                    }
+                    this.previousElementSibling.value = this.value;
+                };
+
+                dynamicInputs.appendChild(label);
+                dynamicInputs.appendChild(range);
+                dynamicInputs.appendChild(text);
+            }
+        }
+
+        function addVariableInputs(labels) {
+            const dynamicInputs = document.getElementById('dynamicInputs');
+            labels.forEach(label => {
+                const selectLabel = document.createElement('label');
+                selectLabel.htmlFor = `${label.toLowerCase()}Variable`;
+                selectLabel.textContent = `Select ${label} Variable:`;
+
+                const select = document.createElement('select');
+                select.id = `${label.toLowerCase()}Variable`;
+                
+                // Populate options based on CSV headers
+                if (data.length > 0) {
+                    Object.keys(data[0]).forEach(header => {
+                        const option = document.createElement('option');
+                        option.value = header;
+                        option.textContent = header;
+                        select.appendChild(option);
+                    });
+                }
+
+                dynamicInputs.appendChild(selectLabel);
+                dynamicInputs.appendChild(select);
+            });
+        }
+
+        function runAnalysis() {
+            const analysisType = document.getElementById('analysisType').value;
+            let results;
+
+            switch (analysisType) {
+                case 'basic':
+                    results = calculateBasicStats();
+                    break;
+                case 'ttest':
+                    results = performTTest();
+                    break;
+                // Add more cases for other analysis types
+                default:
+                    results = "Analysis not implemented yet.";
+            }
+
+            document.getElementById('results').textContent = JSON.stringify(results, null, 2);
+            updateChart();
+        }
+
+        function calculateBasicStats() {
+            // Implement comprehensive basic statistics calculation
+            const numericData = data.map(row => parseFloat(row[Object.keys(row)[0]])).filter(val => !isNaN(val));
+            const sortedData = [...numericData].sort((a, b) => a - b);
+            const n = numericData.length;
+
+            return {
+                mean: math.mean(numericData),
+                median: math.median(numericData),
+                mode: math.mode(numericData),
+                variance: math.variance(numericData),
+                standardDeviation: math.std(numericData),
+                skewness: calculateSkewness(numericData),
+                kurtosis: calculateKurtosis(numericData),
+                min: Math.min(...numericData),
+                max: Math.max(...numericData),
+                range: Math.max(...numericData) - Math.min(...numericData),
+                q1: calculateQuantile(sortedData, 0.25),
+                q3: calculateQuantile(sortedData, 0.75),
+                iqr: calculateQuantile(sortedData, 0.75) - calculateQuantile(sortedData, 0.25),
+                coefficientOfVariation: (math.std(numericData) / math.mean(numericData)) * 100,
+                standardError: math.std(numericData) / Math.sqrt(n),
+                confidenceInterval95: calculateConfidenceInterval(numericData, 0.95),
+                shapiroWilkTest: performShapiroWilkTest(numericData),
+                zScores: calculateZScores(numericData)
+            };
+        }
+
+        function calculateSkewness(data) {
+            const n = data.length;
+            const mean = math.mean(data);
+            const s = math.std(data);
+            const skew = (1 / n) * data.reduce((sum, val) => sum + Math.pow((val - mean) / s, 3), 0);
+            return skew;
+        }
+
+        function calculateKurtosis(data) {
+            const n = data.length;
+            const mean = math.mean(data);
+            const s = math.std(data);
+            const kurt = (1 / n) * data.reduce((sum, val) => sum + Math.pow((val - mean) / s, 4), 0) - 3;
+            return kurt;
+        }
+
+        function calculateQuantile(sortedData, q) {
+            const pos = (sortedData.length - 1) * q;
+            const base = Math.floor(pos);
+            const rest = pos - base;
+            if (sortedData[base + 1] !== undefined) {
+                return sortedData[base] + rest * (sortedData[base + 1] - sortedData[base]);
+            } else {
+                return sortedData[base];
+            }
+        }
+
+        function calculateConfidenceInterval(data, confidence) {
+            const n = data.length;
+            const mean = math.mean(data);
+            const stdError = math.std(data) / Math.sqrt(n);
+            const tScore = jstat.studentt.inv((1 + confidence) / 2, n - 1);
+            const margin = tScore * stdError;
+            return [mean - margin, mean + margin];
+        }
+
+        function performShapiroWilkTest(data) {
+            // This is a simplified version. For a full implementation, consider using a statistical library.
+            const n = data.length;
+            if (n < 3 || n > 5000) {
+                return "Sample size must be between 3 and 5000 for Shapiro-Wilk test";
+            }
+            // ... (implement full Shapiro-Wilk algorithm)
+            return { statistic: 0, pValue: 0 }; // Placeholder
+        }
+
+        function calculateZScores(data) {
+            const mean = math.mean(data);
+            const std = math.std(data);
+            return data.map(val => (val - mean) / std);
+        }
+
+        function performTTest() {
+            const group1 = data.filter(row => row[Object.keys(row)[0]] === document.getElementById('group1Variable').value)
+                               .map(row => parseFloat(row[Object.keys(row)[1]]));
+            const group2 = data.filter(row => row[Object.keys(row)[0]] === document.getElementById('group2Variable').value)
+                               .map(row => parseFloat(row[Object.keys(row)[1]]));
+
+            const n1 = group1.length;
+            const n2 = group2.length;
+            const mean1 = math.mean(group1);
+            const mean2 = math.mean(group2);
+            const var1 = math.variance(group1);
+            const var2 = math.variance(group2);
+
+            const pooledSE = Math.sqrt(var1/n1 + var2/n2);
+            const tValue = (mean1 - mean2) / pooledSE;
+            const df = n1 + n2 - 2;
+            const pValue = 2 * (1 - jstat.studentt.cdf(Math.abs(tValue), df));
+
+            const cohensD = (mean1 - mean2) / Math.sqrt((var1 + var2) / 2);
+
+            return {
+                tValue: tValue,
+                pValue: pValue,
+                degreesOfFreedom: df,
+                cohensD: cohensD,
+                confidenceInterval95: calculateConfidenceInterval([...group1, ...group2], 0.95),
+                group1Statistics: calculateBasicStats(group1),
+                group2Statistics: calculateBasicStats(group2)
+            };
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            const chartType = document.getElementById('chartType').value;
+            const analysisType = document.getElementById('analysisType').value;
+
+            if (analysisType === 'basic') {
+                const stats = calculateBasicStats();
+                chartData = {
+                    labels: Object.keys(stats),
+                    datasets: [{
+                        label: 'Statistics',
+                        data: Object.values(stats),
+                        backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                        borderColor: 'rgba(255, 0, 255, 1)'
+                    }]
+                };
+            } else if (analysisType === 'ttest') {
+                const tTestResults = performTTest();
+                chartData = {
+                    labels: ['Group 1 Mean', 'Group 2 Mean'],
+                    datasets: [{
+                        label: 'Group Means',
+                        data: [tTestResults.group1Statistics.mean, tTestResults.group2Statistics.mean],
+                        backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
+                        borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
+                    }]
+                };
+            }
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            // This is a simple example. You'd need to adapt this based on your actual data and analysis
+            const chartData = {
+                labels: ['Group 1', 'Group 2'],
+                datasets: [{
+                    label: 'Values',
+                    data: [
+                        parseFloat(document.getElementById('group1').value),
+                        parseFloat(document.getElementById('group2').value)
+                    ],
+                    backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
+                    borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
+                }]
+            };
+
+            chart = new Chart(ctx, {
+                type: chartType,
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy',
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportResults() {
+            const results = document.getElementById('results').textContent;
+            const blob = new Blob([results], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'analysis_results.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize UI
+        function initializeUI() {
+            // Set up file input
+            const fileInput = document.getElementById('fileUpload');
+            fileInput.addEventListener('change', processCSV);
+
+            // Set up analysis type selector
+            const analysisTypeSelect = document.getElementById('analysisType');
+            analysisTypeSelect.addEventListener('change', updateUI);
+
+            // Set up chart type selector
+            const chartTypeSelect = document.getElementById('chartType');
+            chartTypeSelect.addEventListener('change', updateChart);
+
+            // Initialize dynamic inputs
+            updateUI();
+
+            // Set up run analysis button
+            const runAnalysisButton = document.querySelector('button[onclick="runAnalysis()"]');
+            runAnalysisButton.addEventListener('click', runAnalysis);
+
+            // Set up export results button
+            const exportResultsButton = document.querySelector('button[onclick="exportResults()"]');
+            exportResultsButton.addEventListener('click', exportResults);
+
+            // Initialize results display
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.textContent = 'No analysis performed yet.';
+
+            // Initialize chart
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['No Data'],
+                    datasets: [{
+                        label: 'No Data',
+                        data: [0],
+                        backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                        borderColor: 'rgba(255, 0, 255, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy',
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Set up filter container
+            const filterContainer = document.getElementById('filterContainer');
+            filterContainer.innerHTML = '<p>No filters available yet.</p>';
+
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        // Call the initialization function when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initializeUI);
+    </script>
+</body>
+</html>
