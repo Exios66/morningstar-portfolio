@@ -211,8 +211,11 @@
 
     <div class="container">
         <div class="file-input-wrapper">
-            <button class="btn" type="button" onclick="document.getElementById('fileUpload').click()">Choose CSV File</button>
+            <button class="btn" type="button" onclick="document.getElementById('fileUpload').click()" aria-label="Choose CSV File">
+                Choose CSV File
+            </button>
             <input type="file" id="fileUpload" accept=".csv" onchange="processCSV(event)" aria-label="Upload CSV file">
+            <div id="fileStatus" aria-live="polite"></div>
         </div>
 
         <label for="analysisType">Select the Statistical Analysis:</label>
@@ -667,6 +670,10 @@
 
         // Call the initialization function when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', initializeUI);
+
+        function updateFileStatus(message) {
+            document.getElementById('fileStatus').textContent = message;
+        }
     </script>
 </body>
 </html>
