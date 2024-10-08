@@ -105,4 +105,6 @@ venv/
 *.pyc
 __pycache__/
 
-# Existing entries (if any) would be preserved here
+# Explicitly track .github directory and its contents
+!.github/
+!.github/*
