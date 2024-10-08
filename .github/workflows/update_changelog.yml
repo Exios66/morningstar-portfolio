@@ -24,6 +24,10 @@ jobs:
         ls -la .github
         echo "Git status:"
         git status
+        echo "Git submodule status:"
+        git submodule status
+        echo "Git config:"
+        git config --list
 
     - name: Set up Python
       uses: actions/setup-python@v5
