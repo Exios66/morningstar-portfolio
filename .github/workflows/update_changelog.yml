@@ -29,6 +29,15 @@ jobs:
         echo "Git config:"
         git config --list
 
+    - name: Debug repository state
+      run: |
+        echo "Current directory contents:"
+        ls -la
+        echo ".github directory contents:"
+        ls -la .github
+        echo "Git status:"
+        git status
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
