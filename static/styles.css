@@ -1,8 +1,21 @@
-/* Add your custom styles here */
+/* Global styles */
+:root {
+    --color-bg-1: #120458;
+    --color-bg-2: #000000;
+    --color-text: #00fff1;
+    --color-accent: #ff00ff;
+    --color-secondary: #7b00ff;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: var(--color-text);
+    background: linear-gradient(45deg, var(--color-bg-1), var(--color-bg-2));
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -15,4 +28,83 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 20px;
 }
 
-/* Add more styles as needed */
+/* Header styles */
+.page-header {
+    text-align: center;
+    padding: 50px 0;
+    position: relative;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--color-accent);
+    animation: glitch 500ms infinite;
+}
+
+/* Button styles */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--color-accent);
+    color: var(--color-bg-1);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-text);
+}
+
+.btn:hover {
+    background-color: var(--color-text);
+    color: var(--color-accent);
+    box-shadow: 0 0 15px var(--color-text);
+}
+
+/* Dark theme styles */
+.dark-theme {
+    --color-bg-1: #000000;
+    --color-bg-2: #120458;
+    --color-text: #ffffff;
+    --color-accent: #00fff1;
+    --color-secondary: #ff00ff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+}
+
+/* Animation keyframes */
+@keyframes glitch {
+    0% {
+        text-shadow: 0.05em 0 0 var(--color-accent), -0.05em -0.025em 0 var(--color-secondary), -0.025em 0.05em 0 var(--color-text);
+    }
+    14% {
+        text-shadow: 0.05em 0 0 var(--color-accent), -0.05em -0.025em 0 var(--color-secondary), -0.025em 0.05em 0 var(--color-text);
+    }
+    15% {
+        text-shadow: -0.05em -0.025em 0 var(--color-accent), 0.025em 0.025em 0 var(--color-secondary), -0.05em -0.05em 0 var(--color-text);
+    }
+    49% {
+        text-shadow: -0.05em -0.025em 0 var(--color-accent), 0.025em 0.025em 0 var(--color-secondary), -0.05em -0.05em 0 var(--color-text);
+    }
+    50% {
+        text-shadow: 0.025em 0.05em 0 var(--color-accent), 0.05em 0 0 var(--color-secondary), 0 -0.05em 0 var(--color-text);
+        transform: translate(0.025em, 0.05em);
+    }
+    99% {
+        text-shadow: 0.025em 0.05em 0 var(--color-accent), 0.05em 0 0 var(--color-secondary), 0 -0.05em 0 var(--color-text);
+        transform: translate(0.025em, 0.05em);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 var(--color-accent), -0.025em -0.025em 0 var(--color-secondary), -0.025em -0.05em 0 var(--color-text);
+    }
+}
