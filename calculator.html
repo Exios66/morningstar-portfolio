@@ -289,8 +289,9 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const text = e.target.result;
-                data = Papa.parse(text, { header: true }).data;
+                data = Papa.parse(text, { header: true, dynamicTyping: true }).data;
                 updateUI();
+                updateFileStatus(`File loaded: ${file.name}`);
             };
             reader.readAsText(file);
         }
@@ -300,76 +301,81 @@
             const dynamicInputs = document.getElementById('dynamicInputs');
             dynamicInputs.innerHTML = '';
 
+            if (data.length === 0) {
+                dynamicInputs.innerHTML = '<p>Please upload a CSV file first.</p>';
+                return;
+            }
+
+            const columns = Object.keys(data[0]);
+
             switch (analysisType) {
+                case 'basic':
+                    addColumnSelector('Select column for analysis:', 'columnSelect');
+                    break;
                 case 'ttest':
+                case 'mannwhitney':
+                    addColumnSelector('Select group column:', 'groupColumn');
+                    addColumnSelector('Select value column:', 'valueColumn');
+                    break;
                 case 'anova':
-                    addGroupInputs(2);
+                    addColumnSelector('Select group column:', 'groupColumn');
+                    addColumnSelector('Select value column:', 'valueColumn');
                     break;
+                case 'correlation':
                 case 'regression':
-                    addVariableInputs(['Independent', 'Dependent']);
+                    addColumnSelector('Select X variable:', 'xVariable');
+                    addColumnSelector('Select Y variable:', 'yVariable');
                     break;
-                // Add more cases for other analysis types
+                case 'chisquare':
+                    addColumnSelector('Select first categorical variable:', 'variable1');
+                    addColumnSelector('Select second categorical variable:', 'variable2');
+                    break;
+                case 'factoranalysis':
+                case 'cluster':
+                    addMultiColumnSelector('Select variables for analysis:', 'variablesSelect');
+                    break;
             }
         }
 
-        function addGroupInputs(count) {
+        function addColumnSelector(labelText, id) {
             const dynamicInputs = document.getElementById('dynamicInputs');
-            for (let i = 1; i <= count; i++) {
-                const label = document.createElement('label');
-                label.htmlFor = `group${i}`;
-                label.textContent = `Enter Values for Group ${i}:`;
-                
-                const range = document.createElement('input');
-                range.type = 'range';
-                range.id = `group${i}`;
-                range.min = '50';
-                range.max = '100';
-                range.step = '5';
-                range.value = '75';
-                range.oninput = function() { this.nextElementSibling.value = this.value; };
+            const label = document.createElement('label');
+            label.htmlFor = id;
+            label.textContent = labelText;
 
-                const text = document.createElement('input');
-                text.type = 'text';
-                text.id = `group${i}Value`;
-                text.value = '75';
-                text.oninput = function() {
-                    let val = parseInt(this.value);
-                    if (val < 50 || val > 100) {
-                        alert("Value must be between 50 and 100");
-                        this.value = 75;
-                    }
-                    this.previousElementSibling.value = this.value;
-                };
-
-                dynamicInputs.appendChild(label);
-                dynamicInputs.appendChild(range);
-                dynamicInputs.appendChild(text);
-            }
-        }
-
-        function addVariableInputs(labels) {
-            const dynamicInputs = document.getElementById('dynamicInputs');
-            labels.forEach(label => {
-                const selectLabel = document.createElement('label');
-                selectLabel.htmlFor = `${label.toLowerCase()}Variable`;
-                selectLabel.textContent = `Select ${label} Variable:`;
-
-                const select = document.createElement('select');
-                select.id = `${label.toLowerCase()}Variable`;
-                
-                // Populate options based on CSV headers
-                if (data.length > 0) {
-                    Object.keys(data[0]).forEach(header => {
-                        const option = document.createElement('option');
-                        option.value = header;
-                        option.textContent = header;
-                        select.appendChild(option);
-                    });
-                }
-
-                dynamicInputs.appendChild(selectLabel);
-                dynamicInputs.appendChild(select);
+            const select = document.createElement('select');
+            select.id = id;
+            
+            Object.keys(data[0]).forEach(column => {
+                const option = document.createElement('option');
+                option.value = column;
+                option.textContent = column;
+                select.appendChild(option);
             });
+
+            dynamicInputs.appendChild(label);
+            dynamicInputs.appendChild(select);
+        }
+
+        function addMultiColumnSelector(labelText, id) {
+            const dynamicInputs = document.getElementById('dynamicInputs');
+            const label = document.createElement('label');
+            label.htmlFor = id;
+            label.textContent = labelText;
+
+            const select = document.createElement('select');
+            select.id = id;
+            select.multiple = true;
+            
+            Object.keys(data[0]).forEach(column => {
+                const option = document.createElement('option');
+                option.value = column;
+                option.textContent = column;
+                select.appendChild(option);
+            });
+
+            dynamicInputs.appendChild(label);
+            dynamicInputs.appendChild(select);
         }
 
         function runAnalysis() {
@@ -383,18 +389,38 @@
                 case 'ttest':
                     results = performTTest();
                     break;
-                // Add more cases for other analysis types
+                case 'anova':
+                    results = performANOVA();
+                    break;
+                case 'correlation':
+                    results = calculateCorrelation();
+                    break;
+                case 'regression':
+                    results = performRegression();
+                    break;
+                case 'chisquare':
+                    results = performChiSquareTest();
+                    break;
+                case 'factoranalysis':
+                    results = performFactorAnalysis();
+                    break;
+                case 'mannwhitney':
+                    results = performMannWhitneyTest();
+                    break;
+                case 'cluster':
+                    results = performClusterAnalysis();
+                    break;
                 default:
                     results = "Analysis not implemented yet.";
             }
 
             document.getElementById('results').textContent = JSON.stringify(results, null, 2);
-            updateChart();
+            updateChart(results, analysisType);
         }
 
         function calculateBasicStats() {
-            // Implement comprehensive basic statistics calculation
-            const numericData = data.map(row => parseFloat(row[Object.keys(row)[0]])).filter(val => !isNaN(val));
+            const column = document.getElementById('columnSelect').value;
+            const numericData = data.map(row => row[column]).filter(val => typeof val === 'number' && !isNaN(val));
             const sortedData = [...numericData].sort((a, b) => a - b);
             const n = numericData.length;
 
@@ -415,8 +441,6 @@
                 coefficientOfVariation: (math.std(numericData) / math.mean(numericData)) * 100,
                 standardError: math.std(numericData) / Math.sqrt(n),
                 confidenceInterval95: calculateConfidenceInterval(numericData, 0.95),
-                shapiroWilkTest: performShapiroWilkTest(numericData),
-                zScores: calculateZScores(numericData)
             };
         }
 
@@ -473,10 +497,16 @@
         }
 
         function performTTest() {
-            const group1 = data.filter(row => row[Object.keys(row)[0]] === document.getElementById('group1Variable').value)
-                               .map(row => parseFloat(row[Object.keys(row)[1]]));
-            const group2 = data.filter(row => row[Object.keys(row)[0]] === document.getElementById('group2Variable').value)
-                               .map(row => parseFloat(row[Object.keys(row)[1]]));
+            const groupColumn = document.getElementById('groupColumn').value;
+            const valueColumn = document.getElementById('valueColumn').value;
+            const groups = [...new Set(data.map(row => row[groupColumn]))];
+            
+            if (groups.length !== 2) {
+                return "T-test requires exactly two groups.";
+            }
+
+            const group1 = data.filter(row => row[groupColumn] === groups[0]).map(row => row[valueColumn]);
+            const group2 = data.filter(row => row[groupColumn] === groups[1]).map(row => row[valueColumn]);
 
             const n1 = group1.length;
             const n2 = group2.length;
@@ -503,64 +533,390 @@
             };
         }
 
-        function updateChart() {
+        function performANOVA() {
+            const groupColumn = document.getElementById('groupColumn').value;
+            const valueColumn = document.getElementById('valueColumn').value;
+            const groups = [...new Set(data.map(row => row[groupColumn]))];
+            
+            const groupData = groups.map(group => 
+                data.filter(row => row[groupColumn] === group).map(row => row[valueColumn])
+            );
+
+            const grandMean = math.mean(data.map(row => row[valueColumn]));
+            const totalSS = data.reduce((sum, row) => sum + Math.pow(row[valueColumn] - grandMean, 2), 0);
+            
+            const betweenSS = groupData.reduce((sum, group) => 
+                sum + group.length * Math.pow(math.mean(group) - grandMean, 2), 0);
+            
+            const withinSS = totalSS - betweenSS;
+            
+            const dfBetween = groups.length - 1;
+            const dfWithin = data.length - groups.length;
+            const dfTotal = data.length - 1;
+            
+            const msBetween = betweenSS / dfBetween;
+            const msWithin = withinSS / dfWithin;
+            
+            const fValue = msBetween / msWithin;
+            const pValue = 1 - jstat.centralF.cdf(fValue, dfBetween, dfWithin);
+
+            return {
+                fValue: fValue,
+                pValue: pValue,
+                dfBetween: dfBetween,
+                dfWithin: dfWithin,
+                msBetween: msBetween,
+                msWithin: msWithin,
+                etaSquared: betweenSS / totalSS
+            };
+        }
+
+        function calculateCorrelation() {
+            const xVariable = document.getElementById('xVariable').value;
+            const yVariable = document.getElementById('yVariable').value;
+            
+            const xValues = data.map(row => row[xVariable]);
+            const yValues = data.map(row => row[yVariable]);
+            
+            const correlation = math.correlation(xValues, yValues);
+            const rSquared = Math.pow(correlation, 2);
+            
+            return {
+                correlation: correlation,
+                rSquared: rSquared,
+                xMean: math.mean(xValues),
+                yMean: math.mean(yValues),
+                xStd: math.std(xValues),
+                yStd: math.std(yValues)
+            };
+        }
+
+        function performRegression() {
+            const xVariable = document.getElementById('xVariable').value;
+            const yVariable = document.getElementById('yVariable').value;
+            
+            const xValues = data.map(row => row[xVariable]);
+            const yValues = data.map(row => row[yVariable]);
+            
+            const regression = math.linearRegression(xValues, yValues);
+            const slope = regression.slope;
+            const intercept = regression.intercept;
+            const rSquared = Math.pow(math.correlation(xValues, yValues), 2);
+            
+            return {
+                slope: slope,
+                intercept: intercept,
+                rSquared: rSquared,
+                equation: `y = ${slope.toFixed(4)}x + ${intercept.toFixed(4)}`,
+                xMean: math.mean(xValues),
+                yMean: math.mean(yValues),
+                xStd: math.std(xValues),
+                yStd: math.std(yValues)
+            };
+        }
+
+        function performChiSquareTest() {
+            const variable1 = document.getElementById('variable1').value;
+            const variable2 = document.getElementById('variable2').value;
+            
+            const contingencyTable = {};
+            data.forEach(row => {
+                const val1 = row[variable1];
+                const val2 = row[variable2];
+                if (!contingencyTable[val1]) contingencyTable[val1] = {};
+                contingencyTable[val1][val2] = (contingencyTable[val1][val2] || 0) + 1;
+            });
+            
+            const rowTotals = {};
+            const colTotals = {};
+            let grandTotal = 0;
+            
+            Object.keys(contingencyTable).forEach(row => {
+                Object.keys(contingencyTable[row]).forEach(col => {
+                    const count = contingencyTable[row][col];
+                    rowTotals[row] = (rowTotals[row] || 0) + count;
+                    colTotals[col] = (colTotals[col] || 0) + count;
+                    grandTotal += count;
+                });
+            });
+            
+            let chiSquare = 0;
+            let df = 0;
+            
+            Object.keys(contingencyTable).forEach(row => {
+                Object.keys(contingencyTable[row]).forEach(col => {
+                    const observed = contingencyTable[row][col];
+                    const expected = (rowTotals[row] * colTotals[col]) / grandTotal;
+                    chiSquare += Math.pow(observed - expected, 2) / expected;
+                });
+            });
+            
+            df = (Object.keys(rowTotals).length - 1) * (Object.keys(colTotals).length - 1);
+            const pValue = 1 - jstat.chisquare.cdf(chiSquare, df);
+            
+            return {
+                chiSquare: chiSquare,
+                degreesOfFreedom: df,
+                pValue: pValue,
+                contingencyTable: contingencyTable
+            };
+        }
+
+        function performFactorAnalysis() {
+            // Note: This is a simplified version of factor analysis
+            const variables = Array.from(document.getElementById('variablesSelect').selectedOptions).map(option => option.value);
+            const matrix = math.matrix(data.map(row => variables.map(v => row[v])));
+            
+            const correlationMatrix = math.correlation(matrix);
+            const eigenvalues = math.eigs(correlationMatrix).values;
+            
+            return {
+                correlationMatrix: correlationMatrix,
+                eigenvalues: eigenvalues,
+                // Additional factor analysis results would be calculated here
+            };
+        }
+
+        function performMannWhitneyTest() {
+            const groupColumn = document.getElementById('groupColumn').value;
+            const valueColumn = document.getElementById('valueColumn').value;
+            const groups = [...new Set(data.map(row => row[groupColumn]))];
+            
+            if (groups.length !== 2) {
+                return "Mann-Whitney U test requires exactly two groups.";
+            }
+
+            const group1 = data.filter(row => row[groupColumn] === groups[0]).map(row => row[valueColumn]);
+            const group2 = data.filter(row => row[groupColumn] === groups[1]).map(row => row[valueColumn]);
+
+            const ranks = [...group1, ...group2].sort((a, b) => a - b)
+                .map((value, index) => ({ value, rank: index + 1 }));
+
+            const r1 = ranks.filter(r => group1.includes(r.value)).reduce((sum, r) => sum + r.rank, 0);
+            const r2 = ranks.filter(r => group2.includes(r.value)).reduce((sum, r) => sum + r.rank, 0);
+
+            const n1 = group1.length;
+            const n2 = group2.length;
+
+            const u1 = r1 - (n1 * (n1 + 1)) / 2;
+            const u2 = r2 - (n2 * (n2 + 1)) / 2;
+
+            const u = Math.min(u1, u2);
+            const z = (u - (n1 * n2 / 2)) / Math.sqrt((n1 * n2 * (n1 + n2 + 1)) / 12);
+
+            const pValue = 2 * (1 - jstat.normal.cdf(Math.abs(z), 0, 1));
+
+            return {
+                uStatistic: u,
+                zScore: z,
+                pValue: pValue,
+                group1Median: math.median(group1),
+                group2Median: math.median(group2)
+            };
+        }
+
+        function performClusterAnalysis() {
+            // Note: This is a simplified k-means clustering
+            const variables = Array.from(document.getElementById('variablesSelect').selectedOptions).map(option => option.value);
+            const k = 3; // Number of clusters (you might want to make this adjustable)
+            
+            const points = data.map(row => variables.map(v => row[v]));
+            
+            // Initialize centroids randomly
+            let centroids = Array(k).fill().map(() => 
+                variables.map(() => Math.random() * (math.max(points) - math.min(points)) + math.min(points))
+            );
+            
+            const maxIterations = 100;
+            let iterations = 0;
+            let oldCentroids;
+            
+            do {
+                oldCentroids = JSON.parse(JSON.stringify(centroids));
+                
+                // Assign points to clusters
+                const clusters = Array(k).fill().map(() => []);
+                points.forEach(point => {
+                    const distances = centroids.map(centroid => 
+                        math.distance(point, centroid)
+                    );
+                    const closestCentroidIndex = distances.indexOf(Math.min(...distances));
+                    clusters[closestCentroidIndex].push(point);
+                });
+                
+                // Update centroids
+                centroids = clusters.map(cluster => 
+                    variables.map((_, i) => math.mean(cluster.map(point => point[i])))
+                );
+                
+                iterations++;
+            } while (iterations < maxIterations && !arraysEqual(oldCentroids, centroids));
+            
+            return {
+                clusters: centroids.map((_, i) => ({
+                    centroid: centroids[i],
+                    size: clusters[i].length
+                })),
+                iterations: iterations
+            };
+        }
+
+        function arraysEqual(a, b) {
+            return JSON.stringify(a) === JSON.stringify(b);
+        }
+
+        function updateChart(results, analysisType) {
             const ctx = document.getElementById('chartCanvas').getContext('2d');
             const chartType = document.getElementById('chartType').value;
-            const analysisType = document.getElementById('analysisType').value;
-
-            if (analysisType === 'basic') {
-                const stats = calculateBasicStats();
-                chartData = {
-                    labels: Object.keys(stats),
-                    datasets: [{
-                        label: 'Statistics',
-                        data: Object.values(stats),
-                        backgroundColor: 'rgba(255, 0, 255, 0.5)',
-                        borderColor: 'rgba(255, 0, 255, 1)'
-                    }]
-                };
-            } else if (analysisType === 'ttest') {
-                const tTestResults = performTTest();
-                chartData = {
-                    labels: ['Group 1 Mean', 'Group 2 Mean'],
-                    datasets: [{
-                        label: 'Group Means',
-                        data: [tTestResults.group1Statistics.mean, tTestResults.group2Statistics.mean],
-                        backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
-                        borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
-                    }]
-                };
-            }
 
             if (chart) {
                 chart.destroy();
             }
 
-            // This is a simple example. You'd need to adapt this based on your actual data and analysis
-            const chartData = {
-                labels: ['Group 1', 'Group 2'],
-                datasets: [{
-                    label: 'Values',
-                    data: [
-                        parseFloat(document.getElementById('group1').value),
-                        parseFloat(document.getElementById('group2').value)
-                    ],
-                    backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
-                    borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
-                }]
-            };
+            let chartData;
+            let chartOptions;
+
+            switch (analysisType) {
+                case 'basic':
+                    chartData = {
+                        labels: Object.keys(results),
+                        datasets: [{
+                            label: 'Basic Statistics',
+                            data: Object.values(results),
+                            backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                            borderColor: 'rgba(255, 0, 255, 1)'
+                        }]
+                    };
+                    break;
+                case 'ttest':
+                case 'mannwhitney':
+                    chartData = {
+                        labels: ['Group 1', 'Group 2'],
+                        datasets: [{
+                            label: 'Group Means',
+                            data: [results.group1Statistics.mean, results.group2Statistics.mean],
+                            backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
+                            borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
+                        }]
+                    };
+                    break;
+                case 'anova':
+                    chartData = {
+                        labels: ['Between Groups', 'Within Groups'],
+                        datasets: [{
+                            label: 'Mean Squares',
+                            data: [results.msBetween, results.msWithin],
+                            backgroundColor: ['rgba(255, 0, 255, 0.5)', 'rgba(0, 255, 255, 0.5)'],
+                            borderColor: ['rgba(255, 0, 255, 1)', 'rgba(0, 255, 255, 1)']
+                        }]
+                    };
+                    break;
+                case 'correlation':
+                case 'regression':
+                    const xVariable = document.getElementById('xVariable').value;
+                    const yVariable = document.getElementById('yVariable').value;
+                    chartData = {
+                        datasets: [{
+                            label: 'Data Points',
+                            data: data.map(row => ({x: row[xVariable], y: row[yVariable]})),
+                            backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                            borderColor: 'rgba(255, 0, 255, 1)'
+                        }]
+                    };
+                    chartOptions = {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: xVariable
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: yVariable
+                                }
+                            }
+                        }
+                    };
+                    break;
+                case 'chisquare':
+                    const categories1 = Object.keys(results.contingencyTable);
+                    const categories2 = Object.keys(results.contingencyTable[categories1[0]]);
+                    chartData = {
+                        labels: categories1,
+                        datasets: categories2.map(cat2 => ({
+                            label: cat2,
+                            data: categories1.map(cat1 => results.contingencyTable[cat1][cat2] || 0),
+                            backgroundColor: `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.5)`
+                        }))
+                    };
+                    break;
+                case 'factoranalysis':
+                    chartData = {
+                        labels: results.eigenvalues.map((_, i) => `Factor ${i+1}`),
+                        datasets: [{
+                            label: 'Eigenvalues',
+                            data: results.eigenvalues,
+                            backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                            borderColor: 'rgba(255, 0, 255, 1)'
+                        }]
+                    };
+                    break;
+                case 'cluster':
+                    const variables = Array.from(document.getElementById('variablesSelect').selectedOptions).map(option => option.value);
+                    if (variables.length === 2) {
+                        chartData = {
+                            datasets: results.clusters.map((cluster, i) => ({
+                                label: `Cluster ${i+1}`,
+                                data: [{x: cluster.centroid[0], y: cluster.centroid[1]}],
+                                backgroundColor: `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.5)`,
+                                borderColor: `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 1)`,
+                                pointRadius: 10
+                            }))
+                        };
+                        chartOptions = {
+                            scales: {
+                                x: {
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    title: {
+                                        display: true,
+                                        text: variables[0]
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: variables[1]
+                                    }
+                                }
+                            }
+                        };
+                    } else {
+                        // For more than 2 variables, show cluster sizes
+                        chartData = {
+                            labels: results.clusters.map((_, i) => `Cluster ${i+1}`),
+                            datasets: [{
+                                label: 'Cluster Sizes',
+                                data: results.clusters.map(cluster => cluster.size),
+                                backgroundColor: 'rgba(255, 0, 255, 0.5)',
+                                borderColor: 'rgba(255, 0, 255, 1)'
+                            }]
+                        };
+                    }
+                    break;
+            }
 
             chart = new Chart(ctx, {
                 type: chartType,
                 data: chartData,
                 options: {
+                    ...chartOptions,
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
                     plugins: {
                         zoom: {
                             zoom: {
