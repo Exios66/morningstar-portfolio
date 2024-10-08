@@ -1,34 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <style>
-        :root {
-            --color-bg-1: #120458;
-            --color-bg-2: #000000;
-            --color-text: #00fff1;
-            --color-accent: #ff00ff;
-        }
+{% block head %}
+<title>404 - Page Not Found</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+<style>
+    :root {
+        --color-bg-1: #120458;
+        --color-bg-2: #000000;
+        --color-text: #00fff1;
+        --color-accent: #ff00ff;
+    }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Orbitron', sans-serif;
-            height: 100%;
-            overflow: hidden;
-            background: linear-gradient(45deg, var(--color-bg-1), var(--color-bg-2));
-        }
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Orbitron', sans-serif;
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(45deg, var(--color-bg-1), var(--color-bg-2));
+    }
 
-        .error-page {
-            display: flex;
-            flex-direction: column;
+    .error-page {
+        display: flex;
+        flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
