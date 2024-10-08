@@ -1,3 +1,7 @@
+[submodule "morningstar-portfolio.wiki"]
+	path = morningstar-portfolio.wiki
+	url = https://github.com/Exios66/morningstar-portfolio.wiki.git
+
 [submodule ".github/dark-triad-assessments.wiki"]
 	path = .github/dark-triad-assessments.wiki
-	url = https://github.com/Exios66/morningstar-portfolio.wiki.git
+	url = https://github.com/Exios66/dark-triad-assessments.wiki.git
