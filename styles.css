@@ -337,11 +337,11 @@ body.dark-theme #theme-toggle .sun-icon {
     scroll-snap-type: x mandatory;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer and Edge */
-    
-    /* Hide scrollbar for Chrome, Safari and newer versions of Opera */
-    &::-webkit-scrollbar {
-        display: none;
-    }
+}
+
+/* Hide scrollbar for Chrome, Safari and newer versions of Opera */
+.skills-container::-webkit-scrollbar {
+    display: none;
 }
 
 .skill {
