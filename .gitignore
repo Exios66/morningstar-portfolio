@@ -108,3 +108,5 @@ __pycache__/
 # Explicitly track .github directory and its contents
 !.github/
 !.github/*
+!.github/dark-triad-assessment.wiki
+!.github/dark-triad-assessment.wiki~7e9eb48
