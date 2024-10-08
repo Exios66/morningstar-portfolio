@@ -7,13 +7,21 @@ const htmlElement = document.documentElement;
 
 // Function to set theme
 function setTheme(theme) {
+    // Ensure the theme is either 'dark' or 'light'
+    if (theme !== 'dark' && theme !== 'light') {
+        console.warn(`Invalid theme: ${theme}. Defaulting to 'light'.`);
+        theme = 'light';
+    }
+
     body.classList.toggle('dark-theme', theme === 'dark');
     htmlElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
 
     // Update theme for all pages
     document.querySelectorAll('iframe').forEach(iframe => {
-        iframe.contentWindow.postMessage({ type: 'themeChange', theme: theme }, '*');
+        if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({ type: 'themeChange', theme: theme }, '*');
+        }
     });
 
     // Update theme for code snippets if Prism is available
@@ -23,9 +31,11 @@ function setTheme(theme) {
 
     // Update theme for charts if Chart.js is available
     if (typeof Chart !== 'undefined') {
-        Chart.helpers.each(Chart.instances, function(instance) {
-            instance.options.theme = theme;
-            instance.update();
+        Chart.helpers.each(Chart.instances, (instance) => {
+            if (instance.options) {
+                instance.options.theme = theme;
+                instance.update();
+            }
         });
     }
 }
@@ -42,7 +52,7 @@ setTheme(savedTheme);
 
 // Listen for theme changes from other windows
 window.addEventListener('message', (event) => {
-    if (event.data.type === 'themeChange') {
+    if (event.data.type === 'themeChange' && (event.data.theme === 'dark' || event.data.theme === 'light')) {
         setTheme(event.data.theme);
     }
 });
@@ -58,5 +68,3 @@ const observer = new MutationObserver((mutations) => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
-
-// Add more functionality as needed

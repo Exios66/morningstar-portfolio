@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Skills - Lucius Morningstar</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZv1g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5" crossorigin="anonymous">
 </head>
 <body>
     <header>
@@ -26,7 +27,7 @@
                 <h1>JavaScript Expertise</h1>
                 <div class="skill-progress">
                     <h2>Skill Level</h2>
-                    <div class="progress progress-javascript" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="JavaScript skill level"></div>
+                    <div class="progress progress-javascript" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="JavaScript skill level" style="width: 85%;"></div>
                     <p>85% Proficiency</p>
                 </div>
                 <div class="skill-description">
@@ -40,11 +41,17 @@
                         <li>DOM manipulation and event handling</li>
                         <li>AJAX and RESTful API integration</li>
                         <li>Node.js and Express.js for server-side development</li>
+                        <li>Testing frameworks (Jest, Mocha)</li>
+                        <li>Frameworks and libraries (React, Vue.js)</li>
                     </ul>
                 </div>
                 <div class="skill-projects">
                     <h2>Related Projects</h2>
-                    <!-- Add links to relevant projects that showcase JavaScript skills -->
+                    <ul>
+                        <li><a href="project1.html">Project 1: Interactive Web App</a></li>
+                        <li><a href="project2.html">Project 2: RESTful API</a></li>
+                        <li><a href="project3.html">Project 3: Real-time Chat Application</a></li>
+                    </ul>
                 </div>
                 <div class="skill-certifications">
                     <h2>Certifications</h2>
@@ -85,5 +92,9 @@
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        // Set the current year in the footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

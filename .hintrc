@@ -11,6 +11,6 @@
   "browserslist": [
     "defaults",
     "not ie 11",
-    "not ios_saf <= 14.8"
+    "not ios_saf >= 15" // Updated to include newer iOS versions
   ]
 }

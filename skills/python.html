@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python Skills - Lucius Morningstar</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZv1g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5g5" crossorigin="anonymous">
 </head>
 <body>
     <header>
@@ -26,7 +27,7 @@
                 <h1>Python Expertise</h1>
                 <div class="skill-progress">
                     <h2>Skill Level</h2>
-                    <div class="progress progress-python" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Python skill level"></div>
+                    <div class="progress progress-python" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="Python skill level" style="width: 70%;"></div>
                     <p>70% Proficiency</p>
                 </div>
                 <div class="skill-description">
@@ -44,7 +45,11 @@
                 </div>
                 <div class="skill-projects">
                     <h2>Related Projects</h2>
-                    <!-- Add links to relevant projects that showcase Python skills -->
+                    <ul>
+                        <li><a href="project1.html">Project 1: Web Application using Django</a></li>
+                        <li><a href="project2.html">Project 2: Data Analysis with Pandas</a></li>
+                        <li><a href="project3.html">Project 3: Machine Learning Model with TensorFlow</a></li>
+                    </ul>
                 </div>
                 <div class="skill-certifications">
                     <h2>Certifications</h2>
@@ -64,9 +69,25 @@
     </main>
 
     <footer>
-        <!-- Add footer content -->
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>Lucius Morningstar</h3>
+                <p>Cyberpunk Visionary | Code Architect | Neuro-Philosopher</p>
+                <p>&copy; <span id="current-year"></span> Morningstar Developments LLC. All rights reserved.</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+            </div>
+        </div>
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        // Set the current year in the footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
