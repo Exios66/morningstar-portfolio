@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,6 +139,7 @@
     </section>
 
     <script>
+        // Particle animation creation
         const particlesContainer = document.getElementById('particles');
         const particleCount = 50;
 
@@ -177,6 +181,7 @@
             });
         }
 
+        // Glitch effect for the "404" text
         const glitch = document.querySelector('.glitch');
         setInterval(() => {
             const glitchText = glitch.getAttribute('data-text');
@@ -190,3 +195,4 @@
     </script>
 </body>
 </html>
+{% endblock %}
