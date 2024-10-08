@@ -11,12 +11,21 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Fetch all history for all tags and branches
 
+    - name: Debug repository state
+      run: |
+        echo "Current directory contents:"
+        ls -la
+        echo ".github directory contents:"
+        ls -la .github
+        echo "Git status:"
+        git status
+
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'  # Use the latest stable version of Python 3
 
@@ -31,6 +40,12 @@ jobs:
         ls -la
         echo "Root directory contents:"
         ls -la /
+
+    - name: Debug Git permissions
+      run: |
+        git remote -v
+        git status
+        git config --list
 
     - name: Run changelog updater
       run: |
@@ -63,8 +78,13 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
 
+    - name: Create logs directory
+      run: |
+        mkdir -p logs
+        echo "Workflow ran at $(date)" > logs/sample.log
+
     - name: Upload logs
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: logs
         path: logs/
