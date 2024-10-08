@@ -278,8 +278,9 @@
     <!-- Update script sources -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.1/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.5/jstat.min.js"></script>
     <script>
         let chart;
         let data = [];
@@ -668,12 +669,52 @@
             const matrix = math.matrix(data.map(row => variables.map(v => row[v])));
             
             const correlationMatrix = math.correlation(matrix);
-            const eigenvalues = math.eigs(correlationMatrix).values;
+            const eigenDecomposition = math.eigs(correlationMatrix);
+            const eigenvalues = eigenDecomposition.values;
+            const eigenvectors = eigenDecomposition.vectors;
             
+            // Calculate factor loadings
+            const factorLoadings = math.multiply(
+                math.matrix(eigenvalues.map(ev => Math.sqrt(ev))),
+                math.transpose(eigenvectors)
+            );
+
+            // Calculate communalities
+            const communalities = factorLoadings.map(row => 
+                math.sum(row.map(loading => loading * loading))
+            );
+
+            // Calculate proportion of variance explained
+            const totalVariance = math.sum(eigenvalues);
+            const proportionOfVariance = eigenvalues.map(ev => ev / totalVariance);
+
+            // Calculate cumulative proportion of variance
+            const cumulativeProportionOfVariance = proportionOfVariance.reduce((acc, val) => {
+                acc.push((acc.length ? acc[acc.length - 1] : 0) + val);
+                return acc;
+            }, []);
+
+            // Determine number of factors to retain (Kaiser criterion)
+            const numFactors = eigenvalues.filter(ev => ev > 1).length;
+
+            // Calculate factor scores (simplified method)
+            const factorScores = math.multiply(
+                math.matrix(data.map(row => variables.map(v => row[v]))),
+                math.inv(correlationMatrix)
+            );
+
+            // Ensure factorScores is a 2D array
+            const factorScoresArray = Array.isArray(factorScores) ? factorScores : factorScores.toArray();
+
             return {
                 correlationMatrix: correlationMatrix,
                 eigenvalues: eigenvalues,
-                // Additional factor analysis results would be calculated here
+                factorLoadings: factorLoadings,
+                communalities: communalities,
+                proportionOfVariance: proportionOfVariance,
+                cumulativeProportionOfVariance: cumulativeProportionOfVariance,
+                numFactors: numFactors,
+                factorScores: factorScoresArray
             };
         }
 

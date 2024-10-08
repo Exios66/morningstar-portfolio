@@ -1,4 +1,4 @@
-/* Add these rules at the top of your CSS file */
+/* Root variables */
 :root {
     --bg-color: #ffffff;
     --text-color: #333333;
@@ -16,20 +16,25 @@
     --body-font: 'Roboto', sans-serif;
 }
 
-/* Add these rules near the top of your CSS file, after the existing :root block */
+/* Dark theme variables */
 :root[data-theme='dark'] {
-  --bg-color: #121212;
-  --text-color: #ffffff;
-  --accent-color: #ff00ff;
-  --secondary-color: #00ff00;
-  --tertiary-color: #ff9900;
-  --bg-gradient: linear-gradient(135deg, #0a0a1e, #1a1a3e);
-  --box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #0a0a1e, #1a1a3e);
+    --box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
+/* Light theme variables */
 :root[data-theme='light'] {
-  --background-color: #ffffff;
-  --text-color: #000000;
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
+
+/* Global styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -200,7 +205,6 @@ body:not(.dark-theme) #theme-toggle .sun-icon,
 body.dark-theme #theme-toggle .moon-icon {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    will-change: transform, opacity;
 }
 
 body:not(.dark-theme) #theme-toggle .moon-icon,
@@ -270,7 +274,7 @@ body.dark-theme #theme-toggle .sun-icon {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer and Edge */
     
-    /* Hide scrollbar for Chrome, Safari and Opera */
+    /* Hide scrollbar for Chrome, Safari and newer versions of Opera */
     &::-webkit-scrollbar {
         display: none;
     }
@@ -334,7 +338,7 @@ body.dark-theme #theme-toggle .sun-icon {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer and Edge */
     
-    /* Hide scrollbar for Chrome, Safari and Opera */
+    /* Hide scrollbar for Chrome, Safari and newer versions of Opera */
     &::-webkit-scrollbar {
         display: none;
     }
@@ -776,6 +780,14 @@ footer {
     .service, .project, .blog-post {
         width: 100%;
     }
+
+    .contact-content {
+        flex-direction: column;
+    }
+
+    .contact-info, .contact-form {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -809,6 +821,30 @@ footer {
 
     .blog-grid {
         flex-direction: column;
+    }
+}
+
+/* Mobile menu toggle button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    nav ul {
+        display: none;
+    }
+
+    nav ul.show {
+        display: flex;
     }
 }
 
@@ -915,7 +951,7 @@ footer {
     }
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari and newer versions of Opera */
 .skills-container::-webkit-scrollbar {
     display: none;
 }
@@ -1298,7 +1334,6 @@ p {
     list-style-type: none;
     padding-left: 0;
 }
-
 .skill-description li {
     margin-bottom: 0.5rem;
     position: relative;
