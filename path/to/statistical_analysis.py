@@ -20,7 +20,7 @@ def perform_statistical_analysis(data, analysis_type, display_option):
     if analysis_type == "Summary Statistics":
         result = calculate_summary_statistics(data)
     elif analysis_type == "Correlation Analysis":
-        result = perform_correlation_analysis(data)
+        result = calculate_correlation_analysis(data)
     elif analysis_type == "Regression Analysis":
         result = perform_regression_analysis(data)
     
